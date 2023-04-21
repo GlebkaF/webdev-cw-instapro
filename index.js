@@ -1,4 +1,4 @@
-import { getPosts } from "./api.js";
+import { getPosts, sendRequestToApi } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -20,7 +20,7 @@ export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
 
-const getToken = () => {
+export const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
   return token;
 };
@@ -37,20 +37,24 @@ export const logout = () => {
 export const goToPage = (newPage, data) => {
   if (
     [
-      POSTS_PAGE,
-      AUTH_PAGE,
-      ADD_POSTS_PAGE,
-      USER_POSTS_PAGE,
-      LOADING_PAGE,
-    ].includes(newPage)
+      POSTS_PAGE, // стр постов
+      AUTH_PAGE, // стр авторизации
+      ADD_POSTS_PAGE, // стр добавления поста
+      USER_POSTS_PAGE, // стр юзер постов
+      LOADING_PAGE, // стр загрузки
+    ].includes(newPage) // Если одна из страниц выше, включает newPage - выполняем какую то логику ниже:
   ) {
     if (newPage === ADD_POSTS_PAGE) {
+      // Если новая страница, это стр-ца добавления поста,то
+      // Проверяем если user указан, то в page присваивается add_post_page, а если user не указан, то auth_page.
+
       // Если пользователь не авторизован, то отправляем его на авторизацию перед добавлением поста
-      page = user ? ADD_POSTS_PAGE : AUTH_PAGE;
+      page = user ? ADD_POSTS_PAGE : AUTH_PAGE; // условие ? выражение1(выпол-ся если усл-ие истинно) : выражение2(вып-ся если усл-ие ложно)
       return renderApp();
     }
 
     if (newPage === POSTS_PAGE) {
+      // отдельная обработка открытия этих страниц
       page = LOADING_PAGE;
       renderApp();
 
@@ -67,6 +71,7 @@ export const goToPage = (newPage, data) => {
     }
 
     if (newPage === USER_POSTS_PAGE) {
+      // отдельная обработка открытия этих страниц
       // TODO: реализовать получение постов юзера из API
       console.log("Открываю страницу пользователя: ", data.userId);
       page = USER_POSTS_PAGE;
@@ -74,17 +79,17 @@ export const goToPage = (newPage, data) => {
       return renderApp();
     }
 
-    page = newPage;
+    page = newPage; // для всех остальных страниц - просто в page записываем новое значение и рендерим приложение
     renderApp();
 
     return;
   }
 
-  throw new Error("страницы не существует");
+  throw new Error("страницы не существует"); // Если newPage - не одна из этих страниц, то вызываем ошибку. Ничего более не происходит
 };
 
 const renderApp = () => {
-  const appEl = document.getElementById("app");
+  const appEl = document.getElementById("app"); // получаем тут div с id-"app" из index.html
   if (page === LOADING_PAGE) {
     return renderLoadingPageComponent({
       appEl,
@@ -110,9 +115,20 @@ const renderApp = () => {
     return renderAddPostPageComponent({
       appEl,
       onAddPostClick({ description, imageUrl }) {
+        // Принимаем данные из callback ф-ии, со стр-цы add-post-page
+        // Далее передаем их в ф-ию sendRequestToApi
         // TODO: реализовать добавление поста в API
-        console.log("Добавляю пост...", { description, imageUrl });
-        goToPage(POSTS_PAGE);
+        console.log({ imageUrl });
+
+        //Реализуем ф-ию отправки данных в апи со страницы добавления постов
+        return sendRequestToApi({
+          description,
+          imageUrl: imageUrl,
+          token: getToken(),
+        }).then(() => {
+          goToPage(POSTS_PAGE);
+        });
+        // console.log("Добавляю пост...", { description, imageUrl });
       },
     });
   }
@@ -130,4 +146,5 @@ const renderApp = () => {
   }
 };
 
+// вызывается Функция которая открывает страницу с постами, с нее начинается работа приложения
 goToPage(POSTS_PAGE);
