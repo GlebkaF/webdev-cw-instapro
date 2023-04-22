@@ -2,15 +2,13 @@ import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 
+import { formatDistanceToNow } from "date-fns";
+import { ru } from "date-fns/locale";
 export function renderPostsPageComponent({ appEl }) {
   // TODO: реализовать рендер постов из api
 
   console.log("Актуальный список постов:", posts);
 
-  /**
-   * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
-   * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
-   */
   const appHtml = posts
     .map(
       (elementsOfdata, index) =>
@@ -53,14 +51,23 @@ export function renderPostsPageComponent({ appEl }) {
                       ${elementsOfdata.description}
                     </p>
                     <p class="post-date">
-                      19 минут назад <!-- придется подключать библ date-fns -->
+                      ${formatDistanceToNow(
+                        new Date(elementsOfdata.createdAt),
+                        {
+                          locale: ru,
+                          addSuffix: true,
+                        }
+                      )}
                     </p>
                   </li>
                 </ul>
               </div>`
     )
     .join("");
-
+  /**
+   * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
+   * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
+   */
   appEl.innerHTML = appHtml;
 
   renderHeaderComponent({

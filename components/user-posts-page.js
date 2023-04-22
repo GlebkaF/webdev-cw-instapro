@@ -1,6 +1,9 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { userPosts, goToPage } from "../index.js";
+import { userPosts, goToPage, getToken } from "../index.js";
+
+import { formatDistanceToNow } from "date-fns";
+import { ru } from "date-fns/locale";
 
 export function renderUserPosts({ appEl }) {
   // TODO: реализовать рендер постов из api
@@ -11,15 +14,15 @@ export function renderUserPosts({ appEl }) {
    * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
    */
-  const appHtml = userPosts
+
+  const bodyPostsUser = userPosts // Все посты юзера без Фото и имени (чтобы они не дублировались)
     .map(
       (data, index) =>
         `
         <div class="page-container">
         <div class="header-container"></div>
       <div class="posts-user-header">
-        <img src="${data.user.imageUrl}" class="posts-user-header__user-image">
-        <p class="posts-user-header__user-name">${data.user.name}</p>
+        <!-- эту часть вынесли, чтобы аватарка с именем не дублировалась много раз -->
       </div>
       
       <div>
@@ -47,28 +50,40 @@ export function renderUserPosts({ appEl }) {
       ${data.description}
       </p>
       <p class="post-date">
-      около 4 часов назад 
+      ${formatDistanceToNow(new Date(data.createdAt), {
+        locale: ru, // перевод даты на ру
+        addSuffix: true, // добавляет надпись "назад"
+      })}
       </p>
       </li>
       <li class="post">
            </ul>
       </div>
-      
-      </div>
-              
-              
-              
-
-
-                
-
-
-              
-              
-              
+      </div> 
               `
     )
     .join("");
+
+  const notRepeatAvatarAndNameUser = userPosts // (avatar and name: user)
+    .map((data) => {
+      return `
+      <img src="${data.user.imageUrl}" class="posts-user-header__user-image">
+      <p class="posts-user-header__user-name">${data.user.name}</p>`;
+    })
+    .pop(); // чтобы фото с именем не дублировалось применили метод
+
+  const appHtml = `
+     <div class="page-container">
+     <div class="header-container"></div>
+   <div class="posts-user-header">
+     ${notRepeatAvatarAndNameUser}
+   </div>
+   ${bodyPostsUser}
+   <div>
+   <ul class="posts">
+   <br>
+   </div>
+    `;
 
   appEl.innerHTML = appHtml;
 
