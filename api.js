@@ -4,6 +4,7 @@ const personalKey = "prod";
 export const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
+const forUserPosts = `${baseHost}/api/v1/${personalKey}/instapro/user-posts/}`;
 // Полуение всех постов c api
 
 export function getPosts({ token }) {
@@ -27,20 +28,34 @@ export function getPosts({ token }) {
     });
 }
 
-// export function getPosts ({token}) {
-//   return fetch('https://webdev-hw-api.vercel.app/api/v1/prod/instapro', {
-//   method: "GET",
-//   headers: {
-//     Authorization: token,
-//   },
-// })
-//   .then((response) => {
-//     return response.json();
-//   })
-//   .then ((data) => {
-//     console.log(data);
-//     return data.posts
-//   })
+// получение постов конкретного юзера
+
+export function getAllPostsUser({ token, id }) {
+  // с index.js передаем сюда data, а дальше в апи запрос по конкретному айди что нам нужен, затем вызываем ф-ию в индекс и отрисовываем там что получили с апи
+  return fetch(
+    // проверить адрес---------------
+    "https://webdev-hw-api.vercel.app/api/v1/prod/instapro/user-posts/" +
+      id.userId,
+    // forUserPosts + `${data.userId}`, // выдает ошибку из за плюса...
+
+    // baseHost + "/api/v1/prod/instapro/user-posts/" + id.userId,
+    {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    }
+  )
+    .then((response) => {
+      console.log({ id });
+      console.log(response);
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data.posts);
+      return data.posts;
+    });
+}
 
 // https://github.com/GlebkaF/webdev-hw-api/blob/main/pages/api/user/README.md#%D0%B0%D0%B2%D1%82%D0%BE%D1%80%D0%B8%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%D1%81%D1%8F
 // Функция регистрации нового пользователя

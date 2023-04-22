@@ -11,25 +11,41 @@ export function renderPostsPageComponent({ appEl }) {
    * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
    */
-  const appHtml = posts.map((elementsOfdata, index) => 
-  `
+  const appHtml = posts
+    .map(
+      (elementsOfdata, index) =>
+        `
               <div class="page-container">
                 <div class="header-container"></div>
                 <ul class="posts">
                   <li class="post">
-                    <div class="post-header" data-user-id="${elementsOfdata.id}">
-                        <img src="${elementsOfdata.user.imageUrl}" class="post-header__user-image">  <!-- тут меняем аватарку юзера -->
-                        <p class="post-header__user-name">${elementsOfdata.user.name}</p>
+                    <div class="post-header" data-user-id="${
+                      elementsOfdata.user.id
+                    }">
+                        <img src="${
+                          elementsOfdata.user.imageUrl
+                        }" class="post-header__user-image">  <!-- тут меняем аватарку юзера -->
+                        <p class="post-header__user-name">${
+                          elementsOfdata.user.name
+                        }</p>
                     </div>
                     <div class="post-image-container">
                       <img class="post-image" src="${elementsOfdata.imageUrl}">
                     </div>
                     <div class="post-likes">
-                      <button data-post-id="${elementsOfdata.id}" class="like-button">
-                        ${elementsOfdata.isLiked ? '<img src="./assets/images/like-active.svg">' : '<img src="./assets/images/like-not-active.svg">'}
+                      <button data-post-id="${
+                        elementsOfdata.id
+                      }" class="like-button">
+                        ${
+                          elementsOfdata.isLiked
+                            ? '<img src="./assets/images/like-active.svg">'
+                            : '<img src="./assets/images/like-not-active.svg">'
+                        }
                       </button>
                       <p class="post-likes-text">
-                        Нравится: <strong>${elementsOfdata.likes.length}</strong>
+                        Нравится: <strong>${
+                          elementsOfdata.likes.length
+                        }</strong>
                       </p>
                     </div>
                     <p class="post-text">
@@ -41,8 +57,10 @@ export function renderPostsPageComponent({ appEl }) {
                     </p>
                   </li>
                 </ul>
-              </div>`).join(''); 
-            
+              </div>`
+    )
+    .join("");
+
   appEl.innerHTML = appHtml;
 
   renderHeaderComponent({

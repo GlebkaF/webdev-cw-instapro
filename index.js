@@ -1,4 +1,4 @@
-import { getPosts, sendRequestToApi } from "./api.js";
+import { getAllPostsUser, getPosts, sendRequestToApi } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -8,6 +8,7 @@ import {
   POSTS_PAGE,
   USER_POSTS_PAGE,
 } from "./routes.js";
+import { renderUserPosts } from "./components/user-posts-page.js";
 import { renderPostsPageComponent } from "./components/posts-page-component.js";
 import { renderLoadingPageComponent } from "./components/loading-page-component.js";
 import {
@@ -19,6 +20,7 @@ import {
 export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
+export let userPosts = [];
 
 export const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
@@ -74,9 +76,26 @@ export const goToPage = (newPage, data) => {
       // отдельная обработка открытия этих страниц
       // TODO: реализовать получение постов юзера из API
       console.log("Открываю страницу пользователя: ", data.userId);
-      page = USER_POSTS_PAGE;
-      posts = [];
-      return renderApp();
+      page = LOADING_PAGE; // сначала загрузка перед появлением самой стр-цы
+
+      renderApp();
+
+      return getAllPostsUser({
+        id: data,
+        token: getToken(),
+      })
+        .then((newPostsUser) => {
+          page = USER_POSTS_PAGE; // userPosts = newPostsUser;
+          userPosts = newPostsUser;
+          // console.log(userPosts);
+          renderApp();
+        })
+        .catch((error) => {
+          console.error(error);
+          goToPage(USER_POSTS_PAGE);
+        });
+
+      // return renderApp();
     }
 
     page = newPage; // для всех остальных страниц - просто в page записываем новое значение и рендерим приложение
@@ -141,8 +160,11 @@ const renderApp = () => {
 
   if (page === USER_POSTS_PAGE) {
     // TODO: реализовать страницу фотографию пользвателя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
-    return;
+    // appEl.innerHTML = "Здесь будет страница фотографий пользователя";
+    return renderUserPosts({
+      // return renderPostsPageComponent({
+      appEl,
+    });
   }
 };
 
