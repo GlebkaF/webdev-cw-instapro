@@ -85,7 +85,7 @@ export const goToPage = (newPage, data) => {
         token: getToken(),
       })
         .then((newPostsUser) => {
-          page = USER_POSTS_PAGE // userPosts = newPostsUser;
+          page = USER_POSTS_PAGE
           userPosts = newPostsUser
           // console.log(userPosts);
           renderApp()

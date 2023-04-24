@@ -111,10 +111,13 @@ export function renderUserPosts({ appEl }) {
 
   appEl.innerHTML = appHtml
   //console.log(document.querySelector(".posts"));
+
+  // Вдыхаем жизнь в лайки!
+
   const buttonLikeElements = document.querySelectorAll(".like-button")
   for (let buttonLikeElement of buttonLikeElements) {
     buttonLikeElement.addEventListener("click", () => {
-      buttonLikeElement.classList.add("-loading-like") // при нажатии на кнопку добавляю класс лоадинг лайк
+      buttonLikeElement.classList.add("-loading-like") // при нажатии на кнопку добавляю класс "лоадинг лайк"
       // лайк будет активен до запуска ф-ии renderUserPosts (147)
       // classList добавляет или убирает класс
       const postID = buttonLikeElement.dataset.postId //находим в разметке post-id // id posta a ne uzera
@@ -128,10 +131,9 @@ export function renderUserPosts({ appEl }) {
         // если лайк не нажатый именно юзером, тогда применяем к нему addLike
 
         // обращаемся к посту на который кликнули
-        // если (кнопка не нажата юзером)
+        // если кнопка не нажата юзером
         // тогда вызываем addLike()
         addLike({
-          // ф-ия поставить лайк
           token: getToken(),
           postID: postID, // id поста
         })
@@ -176,5 +178,3 @@ export function renderUserPosts({ appEl }) {
     })
   }
 }
-
-// Вдыхаем жизнь в лайки!

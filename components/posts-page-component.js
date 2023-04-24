@@ -54,12 +54,12 @@ export function renderPostsPageComponent({ appEl }) {
                                 })
                                 .pop() + // имя последнего человека кто лайкнул
                               " и еще " + // нравится / и еще кому то
-                              (elementsOfdata.likes.length - 1) // (всего 4 лайка, но отображается нр-ся екатерине и еще 3 людям) (3)
+                              (elementsOfdata.likes.length - 1) // (всего 4 лайка, но отображается нр-ся екатерине и еще 3 людям) (3) ( всего в массиве 4 эл-та начиная с 0)
                             : elementsOfdata.likes.length === 1 // если кол-во лайков = 1, то отображается кто лайкнул
                             ? elementsOfdata.likes.map((like) => {
                                 return like.name
                               })
-                            : "0" // в ином случае
+                            : "0"
                         } </strong>
                       </p>
                     </div>
@@ -93,9 +93,9 @@ export function renderPostsPageComponent({ appEl }) {
     const buttonLikeElements = document.querySelectorAll(".like-button")
     for (let buttonLikeElement of buttonLikeElements) {
       buttonLikeElement.addEventListener("click", () => {
-        buttonLikeElement.classList.add("-loading-like") // при нажатии на кнопку добавляю класс лоадинг лайк
+        buttonLikeElement.classList.add("-loading-like") // при нажатии на кнопку добавляю класс "лоадинг лайк"
         // лайк будет активен до запуска ф-ии renderUserPosts (147)
-        // classList добавляет или убирает класс
+        // classList add/remove добавляет или убирает класс
         const postID = buttonLikeElement.dataset.postId //находим в разметке post-id // id posta a ne uzera
         const index = buttonLikeElement.closest(".post").dataset.index // находим index
         const userID = document.querySelector(".posts").dataset.userId
