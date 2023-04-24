@@ -1,4 +1,4 @@
-import { getPosts } from "./api.js";
+import { getPosts, postUsers } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -15,17 +15,20 @@ import {
   removeUserFromLocalStorage,
   saveUserToLocalStorage,
 } from "./helpers.js";
+import {renderAllPostsUser} from "./components/all-posts-user.js";
 
-export let user = getUserFromLocalStorage();
-export let page = null;
-export let posts = [];
+let user = getUserFromLocalStorage();
+let page = null;
+let posts = [];
+let userPosts = [];
 
 const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
+  console.log(token);
   return token;
 };
 
-export const logout = () => {
+const logout = () => {
   user = null;
   removeUserFromLocalStorage();
   goToPage(POSTS_PAGE);
@@ -34,14 +37,14 @@ export const logout = () => {
 /**
  * Включает страницу приложения
  */
-export const goToPage = (newPage, data) => {
+const goToPage = (newPage, data, newPosts) => {
   if (
     [
-      POSTS_PAGE,
-      AUTH_PAGE,
-      ADD_POSTS_PAGE,
-      USER_POSTS_PAGE,
-      LOADING_PAGE,
+      POSTS_PAGE,//страница постов
+      AUTH_PAGE,//страница авторизации
+      ADD_POSTS_PAGE,//страница добавления поста
+      USER_POSTS_PAGE,//страница user постов
+      LOADING_PAGE,//страница загрузи
     ].includes(newPage)
   ) {
     if (newPage === ADD_POSTS_PAGE) {
@@ -68,10 +71,13 @@ export const goToPage = (newPage, data) => {
 
     if (newPage === USER_POSTS_PAGE) {
       // TODO: реализовать получение постов юзера из API
-      console.log("Открываю страницу пользователя: ", data.userId);
+      //console.log("Открываю страницу пользователя: ", data.userId);
       page = USER_POSTS_PAGE;
-      posts = [];
-      return renderApp();
+      if (newPosts){
+        posts = newPosts;
+      }
+      
+      return renderApp(data);
     }
 
     page = newPage;
@@ -83,7 +89,7 @@ export const goToPage = (newPage, data) => {
   throw new Error("страницы не существует");
 };
 
-const renderApp = () => {
+const renderApp = (data) => {
   const appEl = document.getElementById("app");
   if (page === LOADING_PAGE) {
     return renderLoadingPageComponent({
@@ -125,9 +131,20 @@ const renderApp = () => {
 
   if (page === USER_POSTS_PAGE) {
     // TODO: реализовать страницу фотографию пользвателя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
-    return;
+    //appEl.innerHTML = "Здесь будет страница фотографий пользователя";
+    return postUsers({id: data})
+    .then((allPostUser)=> {
+      userPosts = allPostUser;
+      return renderAllPostsUser({ appEl, userPosts, });
+    })
   }
 };
 
 goToPage(POSTS_PAGE);
+export {user};
+export {page};
+export {posts};
+export {logout};
+export {goToPage};
+export {getToken};
+export {USER_POSTS_PAGE};

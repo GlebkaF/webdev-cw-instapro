@@ -1,8 +1,8 @@
 import { loginUser, registerUser } from "../api.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
-
-export function renderAuthPageComponent({ appEl, setUser }) {
+import {safeHtmlString} from "../helpers.js";
+ function renderAuthPageComponent({ appEl, setUser }) {
   let isLoginMode = true;
   let imageUrl = "";
 
@@ -127,9 +127,9 @@ export function renderAuthPageComponent({ appEl, setUser }) {
         }
 
         registerUser({
-          login: login,
-          password: password,
-          name: name,
+          login: safeHtmlString(login),
+          password: safeHtmlString(password),
+          name: safeHtmlString(name),
           imageUrl,
         })
           .then((user) => {
@@ -150,3 +150,5 @@ export function renderAuthPageComponent({ appEl, setUser }) {
 
   renderForm();
 }
+
+export {renderAuthPageComponent};//import пишем в начале кода, а export в конец

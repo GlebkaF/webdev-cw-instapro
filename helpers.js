@@ -9,7 +9,16 @@ export function getUserFromLocalStorage(user) {
     return null;
   }
 }
-
+function safeHtmlString(str) {
+  str = str
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;");
+  return str;
+}
 export function removeUserFromLocalStorage(user) {
   window.localStorage.removeItem("user");
 }
+
+export {safeHtmlString};

@@ -1,6 +1,6 @@
 import { renderHeaderComponent } from "./header-component.js";
 
-export function renderLoadingPageComponent({ appEl, user, goToPage }) {
+function renderLoadingPageComponent({ appEl, user, goToPage }) {
   const appHtml = `
               <div class="page-container">
                 <div class="header-container"></div>
@@ -17,3 +17,4 @@ export function renderLoadingPageComponent({ appEl, user, goToPage }) {
     goToPage,
   });
 }
+export {renderLoadingPageComponent};
