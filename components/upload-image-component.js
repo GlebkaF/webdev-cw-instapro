@@ -1,33 +1,28 @@
 import { uploadImage } from "../api.js";
 
-export function renderUploadImageComponent({ element, onImageUrlChange }) {
+function renderUploadImageComponent({ element, onImageUrlChange }) {
   let imageUrl = "";
+  render();
 
-  const render = () => {
+  function render() {
     element.innerHTML = `
-  <div class="upload=image">
-      ${
-        imageUrl
-          ? `
-          <div class="file-upload-image-conrainer">
+    <div class="upload=image">
+      ${imageUrl
+        ?
+        `<div class="file-upload-image-container">
             <img class="file-upload-image" src="${imageUrl}">
             <button class="file-upload-remove-button button">Заменить фото</button>
           </div>
-          `
-          : `
-            <label class="file-upload-label secondary-button">
-                <input
-                  type="file"
-                  class="file-upload-input"
-                  style="display:none"
-                />
-                Выберите фото
-            </label>
-          
-      `
+        `
+        :
+        `
+        <label class="file-upload-label secondary-button">
+          <input type="file" class="file-upload-input" style="display:none"/>
+          Выберите фото
+        </label>
+        `
       }
-  </div>
-`;
+    </div>`;
 
     const fileInputElement = element.querySelector(".file-upload-input");
 
@@ -37,22 +32,21 @@ export function renderUploadImageComponent({ element, onImageUrlChange }) {
         const lableEl = document.querySelector(".file-upload-label");
         lableEl.setAttribute("disabled", true);
         lableEl.textContent = "Загружаю файл...";
-        uploadImage({ file }).then(({ fileUrl }) => {
-          imageUrl = fileUrl;
-          onImageUrlChange(imageUrl);
-          render();
-        });
+        uploadImage({ file })
+          .then(({ fileUrl }) => {
+            imageUrl = fileUrl;
+            onImageUrlChange(imageUrl);
+            render();
+          });
       }
     });
 
-    element
-      .querySelector(".file-upload-remove-button")
-      ?.addEventListener("click", () => {
-        imageUrl = "";
-        onImageUrlChange(imageUrl);
-        render();
-      });
+    element.querySelector(".file-upload-remove-button")?.addEventListener("click", () => {
+      imageUrl = "";
+      onImageUrlChange(imageUrl);
+      render();
+    });
   };
-
-  render();
 }
+
+export { renderUploadImageComponent }

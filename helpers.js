@@ -1,8 +1,8 @@
-export function saveUserToLocalStorage(user) {
+function saveUserToLocalStorage(user) {
   window.localStorage.setItem("user", JSON.stringify(user));
 }
 
-export function getUserFromLocalStorage(user) {
+function getUserFromLocalStorage() {
   try {
     return JSON.parse(window.localStorage.getItem("user"));
   } catch (error) {
@@ -10,6 +10,17 @@ export function getUserFromLocalStorage(user) {
   }
 }
 
-export function removeUserFromLocalStorage(user) {
+function removeUserFromLocalStorage() {
   window.localStorage.removeItem("user");
 }
+
+function safeHtmlString(str) {
+  str = str
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+  return str;
+}
+
+export { saveUserToLocalStorage, getUserFromLocalStorage, removeUserFromLocalStorage, safeHtmlString }

@@ -100,14 +100,14 @@
 .post-text {
   font-size: 14px;
   line-height: 18px;
-  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .post-date {
   color: #8a8a8a;
 }
 
-.post + .post {
+.post+.post {
   margin-top: 20px;
 }
 
@@ -176,7 +176,7 @@
   text-align: center;
 }
 
-.file-upload-image-conrainer {
+.file-upload-image-container {
   display: flex;
   align-items: center;
 }
@@ -195,4 +195,38 @@
   box-sizing: border-box;
   width: 100%;
   text-align: center;
+}
+
+.from-title {
+  font-size: 28px;
+  line-height: 35px;
+  text-align: center;
+}
+
+.post-delete {
+  margin-top: 10px;
+}
+
+.-loading-like {
+  animation: rotating 2s linear infinite;
+}
+
+@keyframes rotating {
+  from {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(30deg);
+    ;
+  }
+
+  75% {
+    transform: rotate(-30deg);
+    ;
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
 }

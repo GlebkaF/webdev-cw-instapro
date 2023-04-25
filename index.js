@@ -1,55 +1,27 @@
-import { getPosts } from "./api.js";
-import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
+import { getPosts, allPostsUser } from "./api.js";
+import { renderAllPostsUser } from "./components/all-posts-user.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
-import {
-  ADD_POSTS_PAGE,
-  AUTH_PAGE,
-  LOADING_PAGE,
-  POSTS_PAGE,
-  USER_POSTS_PAGE,
-} from "./routes.js";
 import { renderPostsPageComponent } from "./components/posts-page-component.js";
 import { renderLoadingPageComponent } from "./components/loading-page-component.js";
-import {
-  getUserFromLocalStorage,
-  removeUserFromLocalStorage,
-  saveUserToLocalStorage,
-} from "./helpers.js";
+import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
+import { getUserFromLocalStorage, removeUserFromLocalStorage, saveUserToLocalStorage, } from "./helpers.js";
 
-export let user = getUserFromLocalStorage();
-export let page = null;
-export let posts = [];
+const AUTH_PAGE = "auth";
+const POSTS_PAGE = "posts";
+const LOADING_PAGE = "loading";
+const ADD_POSTS_PAGE = "add-post";
+const USER_POSTS_PAGE = "user-posts";
+const appEl = document.getElementById("app");
 
-const getToken = () => {
-  const token = user ? `Bearer ${user.token}` : undefined;
-  return token;
-};
+let posts;
+let userPosts;
+let page = null;
+let user = getUserFromLocalStorage();
 
-export const logout = () => {
-  user = null;
-  removeUserFromLocalStorage();
-  goToPage(POSTS_PAGE);
-};
+goToPage(POSTS_PAGE);
 
-/**
- * Включает страницу приложения
- */
-export const goToPage = (newPage, data) => {
-  if (
-    [
-      POSTS_PAGE,
-      AUTH_PAGE,
-      ADD_POSTS_PAGE,
-      USER_POSTS_PAGE,
-      LOADING_PAGE,
-    ].includes(newPage)
-  ) {
-    if (newPage === ADD_POSTS_PAGE) {
-      // Если пользователь не авторизован, то отправляем его на авторизацию перед добавлением поста
-      page = user ? ADD_POSTS_PAGE : AUTH_PAGE;
-      return renderApp();
-    }
-
+function goToPage(newPage, data) {
+  if ([POSTS_PAGE, AUTH_PAGE, ADD_POSTS_PAGE, USER_POSTS_PAGE, LOADING_PAGE].includes(newPage)) {
     if (newPage === POSTS_PAGE) {
       page = LOADING_PAGE;
       renderApp();
@@ -61,17 +33,20 @@ export const goToPage = (newPage, data) => {
           renderApp();
         })
         .catch((error) => {
-          console.error(error);
           goToPage(POSTS_PAGE);
+          return console.error(error);
         });
     }
 
-    if (newPage === USER_POSTS_PAGE) {
-      // TODO: реализовать получение постов юзера из API
-      console.log("Открываю страницу пользователя: ", data.userId);
-      page = USER_POSTS_PAGE;
-      posts = [];
+    if (newPage === ADD_POSTS_PAGE) {
+      page = user ? ADD_POSTS_PAGE : AUTH_PAGE;
       return renderApp();
+    }
+
+    if (newPage === USER_POSTS_PAGE) {
+      page = USER_POSTS_PAGE;
+      // posts = [];
+      return renderApp(data);
     }
 
     page = newPage;
@@ -83,14 +58,13 @@ export const goToPage = (newPage, data) => {
   throw new Error("страницы не существует");
 };
 
-const renderApp = () => {
-  const appEl = document.getElementById("app");
+function renderApp(data) {
   if (page === LOADING_PAGE) {
-    return renderLoadingPageComponent({
-      appEl,
-      user,
-      goToPage,
-    });
+    return renderLoadingPageComponent({ appEl });
+  }
+
+  if (page === POSTS_PAGE) {
+    return renderPostsPageComponent({ appEl });
   }
 
   if (page === AUTH_PAGE) {
@@ -109,25 +83,41 @@ const renderApp = () => {
   if (page === ADD_POSTS_PAGE) {
     return renderAddPostPageComponent({
       appEl,
-      onAddPostClick({ description, imageUrl }) {
-        // TODO: реализовать добавление поста в API
-        console.log("Добавляю пост...", { description, imageUrl });
+      onAddPostClick() {
         goToPage(POSTS_PAGE);
       },
     });
   }
 
-  if (page === POSTS_PAGE) {
-    return renderPostsPageComponent({
-      appEl,
-    });
-  }
-
   if (page === USER_POSTS_PAGE) {
-    // TODO: реализовать страницу фотографию пользвателя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
-    return;
+    renderLoadingPageComponent({ appEl });
+    return allPostsUser({ id: data })
+      .then((allPostsUser) => {
+        userPosts = allPostsUser;
+        return renderAllPostsUser({ appEl, userPosts, });
+      })
+      .catch((error) => {
+        alert("Произошла не предвиденная ошибка. Мы вернем вас на стартовую страницу")
+        goToPage(POSTS_PAGE);
+        return console.error(error);
+      });
   }
 };
 
-goToPage(POSTS_PAGE);
+function getToken() {
+  const token = user ? `Bearer ${user.token}` : undefined;
+  console.log(token);
+  return token;
+};
+
+function logout() {
+  user = null;
+  removeUserFromLocalStorage();
+  goToPage(POSTS_PAGE);
+};
+
+function newGetPosts(newPosts) {
+  posts = newPosts;
+}
+
+export { POSTS_PAGE, USER_POSTS_PAGE, AUTH_PAGE, ADD_POSTS_PAGE, LOADING_PAGE, user, page, posts, appEl, logout, goToPage, getToken, newGetPosts }
