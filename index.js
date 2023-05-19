@@ -20,7 +20,7 @@ export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
 
-const getToken = () => {
+export const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
   return token;
 };
@@ -55,7 +55,10 @@ export const goToPage = (newPage, data) => {
       renderApp();
 
       return getPosts({ token: getToken() })
-        .then((newPosts) => {
+      .then((newPosts) => {
+        // сделать проверку (массив не пустой!)
+         const loaderEl = document.querySelector(".loading-page");
+         loaderEl.style.display = "none";
           page = POSTS_PAGE;
           posts = newPosts;
           renderApp();
@@ -64,6 +67,7 @@ export const goToPage = (newPage, data) => {
           console.error(error);
           goToPage(POSTS_PAGE);
         });
+
     }
 
     if (newPage === USER_POSTS_PAGE) {
@@ -119,7 +123,7 @@ const renderApp = () => {
 
   if (page === POSTS_PAGE) {
     return renderPostsPageComponent({
-      appEl,
+      appEl, posts
     });
   }
 
