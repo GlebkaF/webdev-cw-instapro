@@ -33,21 +33,26 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick, imageUrl }) 
 		element: document.querySelector(".header-container"),
 	});
 	
-		renderUploadImageComponent({
-			element: document.querySelector('.upload-image'),
-			onImageUrlChange(newImageUrl) {
-				imageUrl = newImageUrl;
-			},
-		});
+};
+
+render();
+
+renderUploadImageComponent({
+	element: document.querySelector('.upload-image'),
+	onImageUrlChange(newImageUrl) {
+		imageUrl = newImageUrl;
+	},
+});
 
 
-    document.getElementById("add-button").addEventListener("click", () => {
-      onAddPostClick({
-        description: appEl.querySelector(".textarea"),
-        imageUrl: imageUrl,
-      });
-    });
-  };
-
-  render();
+document.getElementById("add-button").addEventListener("click", () => {
+onAddPostClick({
+  description: appEl.querySelector(".textarea").value
+  .replaceAll("&", "&amp;")
+  .replaceAll("<", "&lt;")
+  .replaceAll(">", "&gt;")
+  .replaceAll('"', "&quot;"),
+  imageUrl: imageUrl,
+});
+});
 }

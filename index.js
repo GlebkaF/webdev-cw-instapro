@@ -1,4 +1,4 @@
-import { getPosts } from "./api.js";
+import { dislike, like, getPosts, newPost, getUserPosts } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -23,6 +23,30 @@ export let posts = [];
 const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
   return token;
+};
+
+export const toggleUserLike = ({ postId }) => {
+	const index = posts.findIndex((post) => post.id === postId);
+
+	if (posts[index].isLiked) {
+		dislike({ 
+			token: getToken(), 
+			id: postId,
+		}).then((updatedPost) => {
+			posts[index].likes = updatedPost.post.likes;
+			posts[index].isLiked = false;
+			renderApp();
+		});
+	}else {
+		like({ 
+			token: getToken(), 
+			id: postId,
+		}).then((updatedPost) => {
+			posts[index].likes = updatedPost.post.likes;
+			posts[index].isLiked = true;
+			renderApp();
+		});
+	}
 };
 
 export const logout = () => {
@@ -69,10 +93,20 @@ export const goToPage = (newPage, data) => {
     if (newPage === USER_POSTS_PAGE) {
       // TODO: реализовать получение постов юзера из API
       console.log("Открываю страницу пользователя: ", data.userId);
-      page = USER_POSTS_PAGE;
-      posts = [];
-      return renderApp();
-    }
+
+		page = LOADING_PAGE;
+		renderApp();
+
+		return getUserPosts({
+			userId: data.userId,
+			token: getToken(),
+		})
+		.then((newPosts) => {
+			page = USER_POSTS_PAGE;
+			posts = newPosts;
+			return renderApp();
+		});
+	}
 
     page = newPage;
     renderApp();
@@ -111,8 +145,13 @@ const renderApp = () => {
       appEl,
       onAddPostClick({ description, imageUrl }) {
         // TODO: реализовать добавление поста в API
-        console.log("Добавляю пост...", { description, imageUrl });
-        goToPage(POSTS_PAGE);
+			newPost({
+			description: description,
+			imageUrl: imageUrl,
+			token: getToken(),
+		});
+			goToPage(POSTS_PAGE);
+			renderApp();
       },
     });
   }
