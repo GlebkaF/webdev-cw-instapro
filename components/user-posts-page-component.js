@@ -1,6 +1,6 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage, toggleUserLike, user } from "../index.js";
+import { posts, goToPage, toggleUserLike, user, formatDate } from "../index.js";
 
 export function renderUserPostsPageComponent({ appEl }) {
   // TODO: реализовать рендер постов из api
@@ -46,7 +46,7 @@ const postsHtml = posts.map((post) => {
 		${post.description}
 	</p>
 	<p class="post-date">
-		${post.createdAt}
+		${formatDate(post.createdAt)}
 	</p>
 	</li>`
 })

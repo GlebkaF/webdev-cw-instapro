@@ -16,6 +16,8 @@ import {
   removeUserFromLocalStorage,
   saveUserToLocalStorage,
 } from "./helpers.js";
+import { ru } from "date-fns/locale";
+import { formatDistanceToNow } from "date-fns";
 
 export let user = getUserFromLocalStorage();
 export let page = null;
@@ -55,6 +57,10 @@ export const logout = () => {
   removeUserFromLocalStorage();
   goToPage(POSTS_PAGE);
 };
+
+export const formatDate = (date) => {
+	return formatDistanceToNow(new Date(date), { addSuffix: true, locale: ru });
+ };
 
 /**
  * Включает страницу приложения
@@ -148,10 +154,11 @@ const renderApp = () => {
           description: description,
           imageUrl: imageUrl,
           token: getToken(),
-        });
-        goToPage(POSTS_PAGE);
-        renderApp();
-      },
+        })
+			.then(() => {
+			goToPage(POSTS_PAGE);
+      });
+		}
     });
   }
 

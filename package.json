@@ -1,0 +1,25 @@
+{
+  "name": "instapro",
+  "version": "1.0.0",
+  "description": "dev app instapro",
+  "main": "index.js",
+  "scripts": {
+	"dev": "webpack --mode development --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "DOM-coursework-instapro"
+  },
+  "keywords": [
+    "default"
+  ],
+  "author": "PavelCh",
+  "license": "ISC",
+  "dependencies": {
+    "date-fns": "^2.30.0"
+  },
+  "devDependencies": {
+    "webpack": "^5.83.1",
+    "webpack-cli": "^5.1.1"
+  }
+}
