@@ -55,6 +55,7 @@ const postsHtml = posts.map((post) => {
 const appHtml = `
 	<div class="page-container">
 		<div class="header-container"></div>
+		<a href="#" class="scroll-top" title="Наверх"></a>
 		${posts.length === 0 ? "Постов нет" : ""}
 		<ul class="posts">
 		${postsHtml}
@@ -84,5 +85,17 @@ for (let likeEl of document.querySelectorAll(".like-button")) {
 		toggleUserLike({ postId: likeEl.dataset.postId});
 	});
 }
+
+let upButton = document.querySelector('.scroll-top')
+
+function scrollToStart() {
+	if (window.pageYOffset > 20) {
+	upButton.style.opacity = '1'
+	} else { upButton.style.opacity = '0' }
+	}
+upButton.onclick = function () {
+	window.scrollTo(0,0)
+}
+window.onscroll = scrollToStart
 
 }
