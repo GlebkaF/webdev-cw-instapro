@@ -46,13 +46,21 @@ renderUploadImageComponent({
 
 
 document.getElementById("add-button").addEventListener("click", () => {
-onAddPostClick({
-  description: appEl.querySelector(".textarea").value
-  .replaceAll("&", "&amp;")
-  .replaceAll("<", "&lt;")
-  .replaceAll(">", "&gt;")
-  .replaceAll('"', "&quot;"),
-  imageUrl: imageUrl,
-});
+	if (!imageUrl) {
+		return alert("Пожалуйста, добавьте фото")
+	}
+	if (!appEl.querySelector(".textarea").value) {
+		return alert("Пожалуйста, добавьте описание к фото")
+	} else {
+
+		onAddPostClick({
+			description: appEl.querySelector(".textarea").value
+			.replaceAll("&", "&amp;")
+			.replaceAll("<", "&lt;")
+			.replaceAll(">", "&gt;")
+			.replaceAll('"', "&quot;"),
+			imageUrl: imageUrl,
+		});
+	}
 });
 }
