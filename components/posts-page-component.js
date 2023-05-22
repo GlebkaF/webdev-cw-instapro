@@ -4,7 +4,6 @@ import { posts, goToPage } from "../index.js";
 import { getPosts } from "../api.js";
 import { getToken, likeDislikeUser, user } from "../index.js";
 
-
 export function renderPostsPageComponent({ appEl, posts }) {
   getPosts({ token: getToken() }).then((data) => {
     const appPosts = data.posts.map((post) => {
