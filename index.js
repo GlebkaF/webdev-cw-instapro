@@ -28,7 +28,6 @@ export const getToken = () => {
 export const likeDislikeUser = ({ postId }) => {
  const newPosts = posts.posts
   const index = newPosts.findIndex((post) => post.id === postId);
-
   if (newPosts[index].isLiked) {
     dislike({ token: getToken(), id: postId }).then((response) => {
       newPosts[index].likes = response.post.likes;
