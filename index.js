@@ -43,13 +43,11 @@ export const likeDislikeUser = ({ postId }) => {
     });
   }
 };
-
 export const logout = () => {
   user = null;
   removeUserFromLocalStorage();
   goToPage(POSTS_PAGE);
 };
-
 /**
  * Включает страницу приложения
  */
