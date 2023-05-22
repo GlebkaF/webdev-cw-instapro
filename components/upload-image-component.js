@@ -3,7 +3,7 @@ import { uploadImage } from "../api.js";
 export function renderUploadImageComponent({ element, onImageUrlChange }) {
   let imageUrl = "";
 
-  const render = () => {
+const render = () => {
     element.innerHTML = `
   <div class="upload=image">
       ${
