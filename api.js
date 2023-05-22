@@ -1,6 +1,6 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
-const personalKey = "prod";
+const personalKey = "ram";
 const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
@@ -67,4 +67,56 @@ export function uploadImage({ file }) {
   }).then((response) => {
     return response.json();
   });
+}
+export function addPostApi({ description, imageUrl, token }) {
+  return fetch(postsHost, {
+    method: "POST",
+    body: JSON.stringify({
+      description,
+      imageUrl,
+    }),
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    return response.json();
+  });
+}
+
+export function like({ id, token }) {
+  return fetch(postsHost + "/" + id + "/like", {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 500) {
+        throw new Error("Серверная ошибка");
+      }
+      if (response.status === 401) {
+        throw new Error("неавторизированный пользователь");
+      }
+      return response;
+    })
+    .then((response) => response.json());
+}
+
+export function dislike({ id, token }) {
+  return fetch(postsHost + "/" + id + "/dislike", {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 500) {
+        throw new Error("Серверная ошибка");
+      }
+      if (response.status === 401) {
+        throw new Error("неавторизированный пользователь");
+      }
+      return response;
+    })
+    .then((response) => response.json());
 }

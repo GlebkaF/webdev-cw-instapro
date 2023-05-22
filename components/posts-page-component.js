@@ -2,9 +2,10 @@ import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 import { getPosts } from "../api.js";
-import { getToken } from "../index.js";
+import { getToken, likeDislikeUser, user } from "../index.js";
 
-export function renderPostsPageComponent({ appEl, posts}) {
+
+export function renderPostsPageComponent({ appEl, posts }) {
   getPosts({ token: getToken() }).then((data) => {
     const appPosts = data.posts.map((post) => {
       return {
@@ -21,13 +22,24 @@ export function renderPostsPageComponent({ appEl, posts}) {
     });
 
     posts = appPosts;
-    posts.forEach((post) => {
-      appEl.insertAdjacentHTML(
-        "beforeend",
-        `<div class="page-container">
-      <div class="header-container"></div>
-      <ul class="posts">
-        <li class="post">
+    function renderLikes(likes) {
+      if (likes.length === 0) {
+        return 0;
+      } else if (likes.length === 1) {
+        return likes[0].name;
+      } else {
+        let reminingLikes = likes.length - 1;
+        return (
+          likes[0].name +
+          " и еще " +
+          reminingLikes +
+          " " +
+          (reminingLikes == 1 ? "пользователю" : "пользователям")
+        );
+      }
+    }
+    const tasksHtml = posts.map((post) => {
+        return `<li class="post">
           <div class="post-header" data-user-id="${post.id}">
             <img src="${post.imageUrl}" class="post-header__user-image">
             <p class="post-header__user-name">${post.name}</p>
@@ -37,14 +49,19 @@ export function renderPostsPageComponent({ appEl, posts}) {
           </div>
           <div class="post-likes">
             <button data-post-id="${post.id}" class="like-button">
-            <img src="./assets/images/like-active.svg">
+            ${
+              post.isLiked
+                ? '<img src="./assets/images/like-active.svg">'
+                : '<img src="./assets/images/like-not-active.svg"></img>'
+            }
+            
             </button>
             <p class="post-likes-text">
-            Нравится: <strong>2</strong>
+            Нравится: <strong>${renderLikes(post.likes)}</strong>
             </p>
           </div>
           <p class="post-text">
-          <span class="user-name">${post.name}</span>
+          <span class="user-name">${post.name} :</span>
           ${post.description}
           </p>
           <p class="post-date">
@@ -52,24 +69,39 @@ export function renderPostsPageComponent({ appEl, posts}) {
           </p>
         </li>
        `
-      );
-    });
-  });
+    }).join('')
+const appHtml =`<div class = "page-container">
+<div class="header-container"></div>
+<ul class="posts">
+${tasksHtml}
+</ul>
+</div>`;
+appEl.innerHTML = appHtml;
 
+renderHeaderComponent({
+  element: document.querySelector(".header-container"),
+});
+
+});
   /**
    * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
    */
-
-  renderHeaderComponent({
-    element: document.querySelector(".header-container"),
-  });
-
-  for (let userEl of document.querySelectorAll(".post-header")) {
-    userEl.addEventListener("click", () => {
-      goToPage(USER_POSTS_PAGE, {
-        userId: userEl.dataset.userId,
-      });
+for (let userEl of document.querySelectorAll(".post-header")) {
+  userEl.addEventListener("click", () => {
+    goToPage(USER_POSTS_PAGE, {
+      userId: userEl.dataset.userId,
     });
-  }
+  });
+}
+for (let likeEl of document.querySelectorAll(".like-button")) {
+  likeEl.addEventListener("click", () => {
+    if (!user) {
+      alert("Чтобы лайкнуть пост, авторизуйтесь");
+      return;
+    }
+    likeDislikeUser({ postId: likeEl.dataset.postId });
+  });
+}
+  
 }

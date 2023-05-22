@@ -1,4 +1,4 @@
-import { getPosts } from "./api.js";
+import { getPosts, dislike, like } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -23,6 +23,24 @@ export let posts = [];
 export const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
   return token;
+};
+
+export const likeDislikeUser = ({ postId }) => {
+  const index = posts.findIndex((post) => post.id === postId);
+
+  if (posts[index].isLiked) {
+    dislike({ token: getToken(), id: postId }).then((response) => {
+      posts[index].likes = response.post.likes;
+      posts[index].isLiked = false;
+      renderApp();
+    });
+  } else {
+    like({ token: getToken(), id: postId }).then((response) => {
+      posts[index].likes = response.post.likes;
+      posts[index].isLiked = true;
+      renderApp();
+    });
+  }
 };
 
 export const logout = () => {
@@ -55,10 +73,10 @@ export const goToPage = (newPage, data) => {
       renderApp();
 
       return getPosts({ token: getToken() })
-      .then((newPosts) => {
-        // сделать проверку (массив не пустой!)
-         const loaderEl = document.querySelector(".loading-page");
-         loaderEl.style.display = "none";
+        .then((newPosts) => {
+          // сделать проверку (массив не пустой!)
+          const loaderEl = document.querySelector(".loading-page");
+          loaderEl.style.display = "none";
           page = POSTS_PAGE;
           posts = newPosts;
           renderApp();
@@ -67,7 +85,6 @@ export const goToPage = (newPage, data) => {
           console.error(error);
           goToPage(POSTS_PAGE);
         });
-
     }
 
     if (newPage === USER_POSTS_PAGE) {
@@ -123,7 +140,8 @@ const renderApp = () => {
 
   if (page === POSTS_PAGE) {
     return renderPostsPageComponent({
-      appEl, posts
+      appEl,
+      posts,
     });
   }
 
