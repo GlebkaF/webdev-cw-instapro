@@ -3,6 +3,7 @@ import { goToPage } from "../index.js";
 import { addPostApi, getPosts } from "../api.js";
 import { getToken } from "../index.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
+
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
   let imageUrl = "";
   const renderAdd = () => {

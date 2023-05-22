@@ -26,18 +26,19 @@ export const getToken = () => {
 };
 
 export const likeDislikeUser = ({ postId }) => {
-  const index = posts.findIndex((post) => post.id === postId);
+ const newPosts = posts.posts
+  const index = newPosts.findIndex((post) => post.id === postId);
 
-  if (posts[index].isLiked) {
+  if (newPosts[index].isLiked) {
     dislike({ token: getToken(), id: postId }).then((response) => {
-      posts[index].likes = response.post.likes;
-      posts[index].isLiked = false;
+      newPosts[index].likes = response.post.likes;
+      newPosts[index].isLiked = false;
       renderApp();
     });
   } else {
     like({ token: getToken(), id: postId }).then((response) => {
-      posts[index].likes = response.post.likes;
-      posts[index].isLiked = true;
+      newPosts[index].likes = response.post.likes;
+      newPosts[index].isLiked = true;
       renderApp();
     });
   }
@@ -131,8 +132,6 @@ const renderApp = () => {
     return renderAddPostPageComponent({
       appEl,
       onAddPostClick({ description, imageUrl }) {
-        // TODO: реализовать добавление поста в API
-        console.log("Добавляю пост...", { description, imageUrl });
         goToPage(POSTS_PAGE);
       },
     });
@@ -146,8 +145,7 @@ const renderApp = () => {
   }
 
   if (page === USER_POSTS_PAGE) {
-    // TODO: реализовать страницу фотографию пользвателя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
+    renderPostsPageComponent({ appEl, posts })
     return;
   }
 };
