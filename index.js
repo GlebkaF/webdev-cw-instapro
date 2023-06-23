@@ -54,7 +54,7 @@ export const goToPage = (newPage, data) => {
       page = LOADING_PAGE;
       renderApp();
 
-      return getPosts({ token: getToken() })
+      return getPosts({ token: getToken(), user})
         .then((newPosts) => {
           page = POSTS_PAGE;
           posts = newPosts;
@@ -119,7 +119,7 @@ const renderApp = () => {
 
   if (page === POSTS_PAGE) {
     return renderPostsPageComponent({
-      appEl,
+      appEl
     });
   }
 

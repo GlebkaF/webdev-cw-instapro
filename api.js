@@ -4,7 +4,10 @@ const personalKey = "prod";
 const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
-export function getPosts({ token }) {
+// export let user = null;
+// export const setUser = () => user;
+
+export function getPosts({ token}) {
   return fetch(postsHost, {
     method: "GET",
     headers: {
@@ -19,7 +22,19 @@ export function getPosts({ token }) {
       return response.json();
     })
     .then((data) => {
-      return data.posts;
+      return data.posts
+      // .map((post) => {
+      //   userId: post.user.id
+      //   userImg: post.user.imgeUrl
+      //   userName: post.user.name
+      //   imageUrl: post.imageUrl
+      //   postId: post.id
+
+      //   date: post.createdAt
+      //   text: post.description
+      //   likes: post.likes
+      //   isLiked: false
+      // });
     });
 }
 
