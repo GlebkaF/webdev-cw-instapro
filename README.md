@@ -12,4 +12,4 @@ https:: https://rambak02.github.io/webdev-cw-instapro/
 
 ## Фактически затраченное время
 
-9 дней
+5 дней
