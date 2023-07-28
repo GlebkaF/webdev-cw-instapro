@@ -130,4 +130,5 @@ const renderApp = () => {
   }
 };
 
+// точка входа в приложение
 goToPage(POSTS_PAGE);
