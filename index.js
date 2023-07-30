@@ -111,6 +111,15 @@ const renderApp = () => {
       appEl,
       onAddPostClick({ description, imageUrl }) {
         // TODO: реализовать добавление поста в API
+        // 16:46 - 16:52
+        // return fetch(postsHost, {
+        //   method: "POST",
+        //   body: JSON.stringify({
+        //     login: "glebka",
+        //     name: "Глеб Фокин",
+        //     password: "123456",
+        //   }),
+        // });
         console.log("Добавляю пост...", { description, imageUrl });
         goToPage(POSTS_PAGE);
       },
