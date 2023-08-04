@@ -17,7 +17,6 @@ import {
 } from "./helpers.js"; //  Страница с помощниками
 import { renderPostsSpecificUser } from "./posts-specific-user.js";
 
-
 export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];

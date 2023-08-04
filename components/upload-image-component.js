@@ -1,6 +1,5 @@
 // компонент загрузки изображения
 import { uploadImage } from "../api.js";
-
 // рендер функции загрузки изображения
 export function renderUploadImageComponent({ element, onImageUrlChange }) {
   let imageUrl = "";

@@ -2,7 +2,6 @@ const personalKey = "igor-yurin";
 const baseHost = "https://wedev-api.sky.pro";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 const postsSpecificUser = `${baseHost}/api/v1/${personalKey}/instapro/user-posts/`;
-
 // Гет запрос на данные о пользователях
 export function getPosts({ token }) {
   return fetch(postsHost, {

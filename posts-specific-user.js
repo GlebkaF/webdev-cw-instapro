@@ -7,7 +7,6 @@ import { formatDistance } from 'date-fns';
 import { eoLocale } from 'date-fns/locale/eo';
 import { ru } from "date-fns/locale";
 
-
 export function renderPostsSpecificUser({ appEl, token }) {
   console.log("Актуальный список постов:", posts);
   const postHtml = posts

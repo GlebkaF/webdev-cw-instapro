@@ -1,5 +1,4 @@
 // Страница добавления комментария
-
 import { renderUploadImageComponent } from "./upload-image-component.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { postSending } from "../api.js";
