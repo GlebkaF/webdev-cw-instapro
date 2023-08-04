@@ -8,7 +8,6 @@ export function renderAddPostPageComponent({ appEl, token, onAddPostClick }) {
   let imageUrl = "";
 
   const renderAddingAPost = () => {
-    // TODO: Реализовать страницу добавления поста
     const appHtml = `
     <div class="page-container">
       <div class="header-container"></div>

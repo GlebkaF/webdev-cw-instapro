@@ -1,5 +1,4 @@
 // страница загрузки
-
 import { renderHeaderComponent } from "./header-component.js";
 
 export function renderLoadingPageComponent({ appEl, user, goToPage }) {

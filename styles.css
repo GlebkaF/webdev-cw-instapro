@@ -30,7 +30,7 @@
   font-size: 14px;
   line-height: 18px;
   font-weight: 500;
-  cursor: pointer;
+  cursor: pointer; 
 }
 
 .header-button:hover, .logo:hover {

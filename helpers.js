@@ -1,5 +1,4 @@
 // Страница с помощниками
-
 export function saveUserToLocalStorage(user) {
   window.localStorage.setItem("user", JSON.stringify(user));
 }

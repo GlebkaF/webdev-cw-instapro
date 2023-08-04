@@ -21,7 +21,6 @@ export function renderHeaderComponent({ element }) {
       }  
       </button>
   </div>
-  
 `;
 
   element

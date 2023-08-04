@@ -1,5 +1,4 @@
 // Страница сообщений пользователей
-
 import { posts, goToPage } from "./index.js";
 import { renderHeaderComponent } from "./components/header-component.js";
 import { USER_POSTS_PAGE } from "./routes.js";
