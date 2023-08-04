@@ -48,10 +48,38 @@ p {
   padding: 10px 13px 13px;
   font-size: 18px;
   line-height: 22px;
-  border-radius: 5px;
+  border-radius: 50px;
   background-color: #565eef;
   color: #ffffff;
   border: none;
+  cursor: pointer;
+}
+
+.button {
+
+  text-transform: uppercase;
+  letter-spacing: 1.3px;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(90deg, #565eef 0%, #565eef 100%);
+  box-shadow: 6px 5px 20px rgba(0, 4, 248, 0.64);
+  transition: all 0.3s ease-in-out 0s;
+  outline: none;
+  position: relative;
+}
+
+.button:hover, .button:focus {
+  color: #313133;
+  transform: translateY(-6px);
+}
+
+button:hover::before, button:focus::before {
+  opacity: 1;
+}
+
+button:hover::after, button:focus::after {
+  animation: none;
+  display: none;
 }
 
 .link-button {
@@ -129,6 +157,7 @@ strong {
   width: 80px;
   height: 80px;
 }
+
 .loader div {
   display: inline-block;
   position: absolute;
@@ -137,26 +166,47 @@ strong {
   background: #000;
   animation: loader 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
 }
+
 .loader div:nth-child(1) {
   left: 8px;
   animation-delay: -0.24s;
 }
+
 .loader div:nth-child(2) {
   left: 32px;
   animation-delay: -0.12s;
 }
+
 .loader div:nth-child(3) {
   left: 56px;
   animation-delay: 0;
 }
+
 @keyframes loader {
   0% {
     top: 8px;
     height: 64px;
   }
+
   50%,
   100% {
     top: 24px;
     height: 32px;
+  }
+}
+
+
+
+@keyframes ring {
+  0% {
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+  }
+
+  100% {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
   }
 }
