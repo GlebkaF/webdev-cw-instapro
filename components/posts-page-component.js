@@ -73,7 +73,7 @@ export function renderPostsPageComponent({ appEl }) {
         const likeImage = likeButton.querySelector("img");
         const likesCount = likeButton.nextElementSibling.querySelector("strong");
 
-        likeImage.src = `${pathToLikeImg}/like-${data.isLiked ? 'active' : 'not-active'}.svg`;
+        likeImage.src = `${pathToLikeImg}/like-${data.isLiked || data.likes.length ? 'active' : 'not-active'}.svg`;
         likesCount.textContent = data.likes.length;
 
         post.isLiked = data.isLiked;
