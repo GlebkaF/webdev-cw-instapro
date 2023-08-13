@@ -27,7 +27,7 @@ export function renderPostsPageComponent({ appEl }) {
     const listEl = document.createElement('li');
     listEl.classList.add('post');
     const userPost = `
-      <div class="post-header" data-user-id="$post.user.id}">
+      <div class="post-header" data-user-id="${post.user.id}">
         <img src="${post.user.imageUrl}" class="post-header__user-image">
         <p class="post-header__user-name">${post.user.name}</p>
       </div>
@@ -35,7 +35,7 @@ export function renderPostsPageComponent({ appEl }) {
         <img class="post-image" src="${post.imageUrl}">
       </div>
       <div class="post-likes">
-        <button data-post-id="${post.user.id}" class="like-button">
+        <button data-post-id="${post.id}" class="like-button">
           <img src="./assets/images/like-${post.likes.length ? 'active' : 'not-active'}.svg">
         </button>
         <p class="post-likes-text">

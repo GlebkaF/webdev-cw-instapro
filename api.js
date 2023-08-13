@@ -1,11 +1,12 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
-// "боевая" версия инстапро лежит в ключе prod
-const personalKey = "maksim-bersenev";
+// "боевая" версия инстапро лежит в ключе prod 
+// "maksim-bersenev"
+const personalKey = 'prod';
 const baseHost = "https://webdev-hw-api.vercel.app";
 export const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
-export function getPosts({ token }) {
-  return fetch(postsHost, {
+export async function getPosts({ token }) {
+  return await fetch(postsHost, {
     method: "GET",
     headers: {
       Authorization: token,
@@ -16,6 +17,24 @@ export function getPosts({ token }) {
         throw new Error("Нет авторизации");
       }
 
+      return response.json();
+    })
+    .then((data) => {
+      return data.posts;
+    });
+}
+
+export function getUserPosts({ token, userId }) {
+  return fetch(`${postsHost}/user-posts/${userId}`, {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
       return response.json();
     })
     .then((data) => {
