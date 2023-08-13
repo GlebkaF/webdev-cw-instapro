@@ -8,7 +8,6 @@ import { onDeletePost, toggleLike } from "../api.js";
 export function renderPostsPageComponent({ appEl }) {
   // TODO: реализовать рендер постов из api
   console.log("Актуальный список постов:", posts);
-  console.log(user)
   /**
    * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
@@ -81,10 +80,7 @@ export function renderPostsPageComponent({ appEl }) {
         post.likes = data.likes;
       });
     }
-  });
 
-  document.addEventListener("click", (event) => {
-    console.log('delete')
     if (event.target.classList.contains("delete-button")) {
       const index = event.target.dataset.index;
       const postId = posts[index].id;
