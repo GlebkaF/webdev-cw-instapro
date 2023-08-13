@@ -97,6 +97,10 @@
   cursor: pointer;
 }
 
+.like-button > img {
+  pointer-events: none;
+}
+
 .user-name {
   font-weight: 500;
 }

@@ -33,7 +33,6 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
 
     document.getElementById("add-button").addEventListener("click", () => {
       const description = document.getElementById('comment-text').value;
-      console.log(imageUrl)
        
       onAddPostClick({
         description,

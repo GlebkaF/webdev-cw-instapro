@@ -87,3 +87,38 @@ export function uploadImage({ file }) {
     return response.json();
   });
 }
+
+export async function toggleLike({ token, postId, isLiked }) {
+  const likeOrDislike = isLiked ? 'dislike' : 'like';
+
+  return fetch(`${postsHost}/${postId}/${likeOrDislike}`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error();
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data.post;
+    });
+}
+
+export async function onDeletePost({token, id}) {
+
+    await fetch(`${postsHost}/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: token,
+      },
+    }).then(res => {
+      if (res.status !== 201) throw new Error()
+    }).catch(e => {
+      throw Error(e)
+    })
+   
+}

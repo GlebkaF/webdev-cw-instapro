@@ -20,9 +20,10 @@ import { postsHost, getUserPosts } from "./api.js";
 export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
+export let token = '';
 
 const getToken = () => {
-  const token = user ? `Bearer ${user.token}` : undefined;
+  token = user ? `Bearer ${user.token}` : undefined;
   return token;
 };
 
@@ -70,7 +71,6 @@ export const goToPage = (newPage, data) => {
     if (newPage === USER_POSTS_PAGE) {
       // TODO: реализовать получение постов юзера из API
       console.log("Открываю страницу пользователя: ", data.userId);
-      const token = getToken()
       const { userId } = data;
       page = LOADING_PAGE;
       renderApp();
@@ -118,7 +118,6 @@ const renderApp = () => {
     return renderAddPostPageComponent({
       appEl,
       async onAddPostClick({ description, imageUrl }) {
-        const token = getToken();
         await fetch(postsHost, {
           method: 'POST',
           headers: {
@@ -145,7 +144,7 @@ const renderApp = () => {
 
   if (page === USER_POSTS_PAGE) {
     // TODO: реализовать страницу фотографию пользвателя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
+    // appEl.innerHTML = "Здесь будет страница фотографий пользователя";
     return renderPostsPageComponent({
       appEl,
     });
