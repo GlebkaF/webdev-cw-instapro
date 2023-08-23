@@ -1,4 +1,4 @@
-import { USER_POSTS_PAGE } from "../routes.js";
+import { USER_POSTS_PAGE } from "../helpers/routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 
@@ -14,6 +14,7 @@ export function renderPostsPageComponent({ appEl }) {
               <div class="page-container">
                 <div class="header-container"></div>
                 <ul class="posts">
+                
                   <li class="post">
                     <div class="post-header" data-user-id="642d00329b190443860c2f31">
                         <img src="https://www.imgonline.com.ua/examples/bee-on-daisy.jpg" class="post-header__user-image">
@@ -38,6 +39,7 @@ export function renderPostsPageComponent({ appEl }) {
                       19 минут назад
                     </p>
                   </li>
+
                   <li class="post">
                     <div class="post-header" data-user-id="6425602ce156b600f7858df2">
                         <img src="https://storage.yandexcloud.net/skypro-webdev-homework-bucket/1680601502867-%25C3%2590%25C2%25A1%25C3%2590%25C2%25BD%25C3%2590%25C2%25B8%25C3%2590%25C2%25BC%25C3%2590%25C2%25BE%25C3%2590%25C2%25BA%2520%25C3%2591%25C2%258D%25C3%2590%25C2%25BA%25C3%2591%25C2%2580%25C3%2590%25C2%25B0%25C3%2590%25C2%25BD%25C3%2590%25C2%25B0%25202023-04-04%2520%25C3%2590%25C2%25B2%252014.04.29.png" class="post-header__user-image">

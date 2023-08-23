@@ -1,4 +1,12 @@
-import { getPosts } from "./api.js";
+import "./styles/styles.css";
+// import "./styles/ui-kit.css";
+
+
+import imgLikeActive from './assets/images/like-active.svg'
+import imgLikeNotAactive from './assets/images/like-not-active.svg'
+import ico from './assets/icons/favicon.ico'
+
+import { getPosts } from "./helpers/api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -7,14 +15,14 @@ import {
   LOADING_PAGE,
   POSTS_PAGE,
   USER_POSTS_PAGE,
-} from "./routes.js";
+} from "./helpers/routes.js";
 import { renderPostsPageComponent } from "./components/posts-page-component.js";
 import { renderLoadingPageComponent } from "./components/loading-page-component.js";
 import {
   getUserFromLocalStorage,
   removeUserFromLocalStorage,
   saveUserToLocalStorage,
-} from "./helpers.js";
+} from "./helpers/helpers.js";
 
 export let user = getUserFromLocalStorage();
 export let page = null;

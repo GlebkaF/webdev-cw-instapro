@@ -1,3 +1,5 @@
+@import './ui-kit.css';
+
 .page-container {
   padding: 0 20px;
 }
@@ -107,7 +109,7 @@
   color: #8a8a8a;
 }
 
-.post + .post {
+.post+.post {
   margin-top: 20px;
 }
 
