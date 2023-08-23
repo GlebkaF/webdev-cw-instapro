@@ -20,6 +20,7 @@ export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
 
+// Получает учетку пользователя
 const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
   return token;
@@ -49,7 +50,7 @@ export const goToPage = (newPage, data) => {
       page = user ? ADD_POSTS_PAGE : AUTH_PAGE;
       return renderApp();
     }
-
+      // Если пользователь на странице постов авторизован, то загружаем страницу постов 
     if (newPage === POSTS_PAGE) {
       page = LOADING_PAGE;
       renderApp();
@@ -67,6 +68,7 @@ export const goToPage = (newPage, data) => {
     }
 
     if (newPage === USER_POSTS_PAGE) {
+      // Загружает страницу с постами юзера
       // TODO: реализовать получение постов юзера из API
       console.log("Открываю страницу пользователя: ", data.userId);
       page = USER_POSTS_PAGE;
@@ -82,6 +84,28 @@ export const goToPage = (newPage, data) => {
 
   throw new Error("страницы не существует");
 };
+
+// return getPostsByUser({ token: getToken() })
+// .then((newPosts) => {
+//   console.log("Открываю страницу пользователя: ", data.userId);
+//   page = USER_POSTS_PAGE;
+//   posts = newPosts;
+//   renderApp();
+// })
+// }
+// }
+
+// page = newPage;
+// renderApp();
+
+// return;
+// }
+
+// throw new Error("страницы не существует");
+// };
+
+
+
 
 const renderApp = () => {
   const appEl = document.getElementById("app");
