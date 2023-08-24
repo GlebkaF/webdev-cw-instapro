@@ -2,8 +2,9 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const CopyPlugin = require("copy-webpack-plugin");
 const path = require("path")
-const babelLoader = require('babel-loader');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const WebpackBar = require('webpackbar');
+// const babelLoader = require('babel-loader');
+// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 
 
@@ -18,18 +19,6 @@ module.exports = {
         assetModuleFilename: '[name][ext]',
         // assetModuleFilename: 'assets/fonts/[name][ext]',
         publicPath: '/'
-    },
-    devtool: 'cheap-module-source-map',
-    devServer: {
-        open: true,
-        static: {
-            directory: path.resolve(__dirname, 'dist')
-        },
-        port: 8080,
-        hot: true,
-        compress: true,
-        devMiddleware: { writeToDisk: true },
-        client: { overlay: true },
     },
     module: {
         rules: [
@@ -74,17 +63,6 @@ module.exports = {
                     },
                 ],
             },
-            {
-                test: /\.js$/,
-                exclude:
-                    [/node_modules/],
-                use: [{
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }]
-            },
         ]
     },
     plugins: [
@@ -97,13 +75,9 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 { from: 'src/assets', to: 'assets' },
-
             ],
         }),
-        // new MiniCssExtractPlugin({
-        //     filename: '[name].css',
-        // })
-
+        new WebpackBar()
     ]
 
 

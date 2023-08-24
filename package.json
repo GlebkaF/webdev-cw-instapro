@@ -442,11 +442,13 @@
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1",
-    "webpack-merge": "^5.9.0"
+    "webpack-merge": "^5.9.0",
+    "webpackbar": "^5.0.2"
   },
   "scripts": {
-    "start": "webpack serve --mode development",
-    "build": "webpack --mode production"
+    "dev": "webpack serve --open --config webpack.dev.js",
+    "prod": "webpack --config webpack.prod.js",
+    "pret": "prettier --write"
   },
   "keywords": [],
   "author": "",
