@@ -1,6 +1,6 @@
 import { POSTS_PAGE, USER_POSTS_PAGE } from '../routes.js';
 import { renderHeaderComponent } from './header-component.js';
-import { posts, goToPage } from '../index.js';
+import { posts, goToPage } from '../main.js';
 import { setPostLike, setPostDisLike } from '../api.js';
 import formatDistance from 'date-fns/formatDistance';
 import { ru } from 'date-fns/locale';
@@ -26,14 +26,12 @@ export function renderPostsPageComponent({ appEl, token }) {
             <img class="post-image" src=${post.imageUrl}>
           </div>
           <div class="post-likes">
-            <button data-post-id=${post.id} data-is-Liked=${
-          post.isLiked
-        } class="like-button" >
-            ${
-              post.isLiked
-                ? `<img src="./assets/images/like-active.svg" data-is-Liked=${post.isLiked} class="like-button-img" data-post-id=${post.id}>`
-                : `<img src="./assets/images/like-not-active.svg" data-is-Liked=${post.isLiked} class="like-button-img" data-post-id=${post.id}>`
-            }
+            <button data-post-id=${post.id} data-is-Liked=${post.isLiked
+          } class="like-button" >
+            ${post.isLiked
+            ? `<img src="./assets/images/like-active.svg" data-is-Liked=${post.isLiked} class="like-button-img" data-post-id=${post.id}>`
+            : `<img src="./assets/images/like-not-active.svg" data-is-Liked=${post.isLiked} class="like-button-img" data-post-id=${post.id}>`
+          }
             </button>
             <p class="post-likes-text">
               Нравится: <strong>${post.likes.length}</strong>
@@ -44,7 +42,7 @@ export function renderPostsPageComponent({ appEl, token }) {
             ${post.description}
           </p>
           <p class="post-date">
-            ${formatDistance(new Date(), new Date(post.createdAt), {locale: ru})} назад
+            ${formatDistance(new Date(), new Date(post.createdAt), { locale: ru })} назад
           </p>
         </li>`;
       })

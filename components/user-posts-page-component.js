@@ -1,6 +1,6 @@
 
 import { renderHeaderComponent } from './header-component.js';
-import { goToPage } from '../index.js';
+import { goToPage } from '../main.js';
 import { POSTS_PAGE } from '../routes.js';
 import { setPostLike, setPostDisLike } from '../api.js';
 import formatDistance from 'date-fns/formatDistance';
