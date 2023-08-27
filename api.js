@@ -1,6 +1,7 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
-// "боевая" версия инстапро лежит в ключе prod
-const personalKey = "prod";
+
+
+const personalKey = "adam-batukaev";
 const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
@@ -24,30 +25,25 @@ export function getPosts({ token }) {
     });
 }
 
-//Запрос на получение постов кокретного юзера нужно реалзация клика по юзеру
 
-// export function getPostsByUser({ token, userId }) {
-//   const url = `${postsHost}/users/${userId}/posts`; //По этому URL должны лежать посты конкретного юзера
+export function getUserPosts({ token, id }) {
+  return fetch(postsHost + `/user-posts/${id}`, {
+    method: 'GET',
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error('Нет авторизации');
+      }
 
-//   return fetch(url, {
-//     method: "GET",
-//     headers: {
-//       Authorization: token,
-//     },
-//   })
-//     .then((response) => {
-//       console.log(response); //Что мы получили от API по юзеру
-//       if (response.status === 401) {
-//         throw new Error("Нет авторизации");
-//       }
-
-//       return response.json();
-//     })
-//     .then((data) => {
-//       return data.posts;
-//     });
-// }
-
+      return response.json();
+    })
+    .then((data) => {
+      return data.posts;
+    });
+}
 
 
 
@@ -96,3 +92,88 @@ export function uploadImage({ file }) {
     return response.json();
   });
 }
+
+export function addPost({ description, imageUrl, token }) {
+  return fetch(postsHost, {
+    method: 'POST',
+    headers: {
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      description,
+      imageUrl,
+    }),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+}
+
+export function setPostLike({ id, token }) {
+  return fetch(postsHost + `/${id}/like`, {
+    method: 'POST',
+    headers: {
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      isLiked: true,
+    }),
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error('Нет авторизации');
+      }
+      return response.json();
+    })
+    .catch((error) => {
+      console.log(error.message);
+      alert(error.message)
+    });
+}
+
+export function setPostDisLike({ id, token }) {
+  return fetch(postsHost + `/${id}/dislike`, {
+    method: 'POST',
+    headers: {
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      isLiked: false,
+    }),
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error('Нет авторизации');
+      }
+      return response.json();
+    })
+    .catch((error) => {
+      console.log(error.message);
+      alert(error.message)
+    });
+}
+
+
+export function deletePost({ id, token }) {
+  return fetch(postsHost + `/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error('Нет авторизации');
+      }
+      return response.json();
+    })
+    .catch((error) => {
+      console.log(error.message);
+      alert(error.message)
+    });
+}
+
+
