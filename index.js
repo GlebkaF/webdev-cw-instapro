@@ -153,5 +153,5 @@ const renderApp = () => {
     return;
   }
 };
-
+//ads
 goToPage(POSTS_PAGE);
