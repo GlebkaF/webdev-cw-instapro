@@ -3,13 +3,10 @@ const HtmlWebpackPlugin = require("html-webpack-plugin")
 const CopyPlugin = require("copy-webpack-plugin");
 const path = require("path")
 const WebpackBar = require('webpackbar');
-// const babelLoader = require('babel-loader');
-// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
 
 
 module.exports = {
-    // mode: 'development',
+
     entry: {
         index: path.resolve(__dirname, './src/index.js'),
     },
