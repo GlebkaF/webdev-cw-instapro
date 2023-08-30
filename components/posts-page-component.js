@@ -2,8 +2,8 @@ import { POSTS_PAGE, USER_POSTS_PAGE } from '../routes.js';
 import { renderHeaderComponent } from './header-component.js';
 import { posts, goToPage } from '../index.js';
 import { setPostLike, setPostDisLike } from '../api.js';
-import  formatDistance  from 'date-fns/esm';
-import  ru  from 'date-fns/locale';
+import { format } from 'date-fns';
+// import ru from './node_modules/date-fns/locale';
 
 export function renderPostsPageComponent({ appEl, token }) {
   console.log('Актуальный список постов:', posts);
@@ -42,7 +42,7 @@ export function renderPostsPageComponent({ appEl, token }) {
             ${post.description}
           </p>
           <p class="post-date">
-            ${formatDistance(new Date(), new Date(post.createdAt), { locale: ru })} назад
+            ${format ( new Date(), 'do MMMM Y')} назад
           </p>
         </li>`;
       })
