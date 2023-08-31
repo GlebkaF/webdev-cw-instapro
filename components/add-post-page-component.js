@@ -51,10 +51,7 @@ export function renderAddPostPageComponent({ appEl, token, onAddPostClick }) {
     document.getElementById('add-button').addEventListener('click', () => {
       const inputValue = document
         .querySelector('.input')
-        .value.replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;');
+        .value;
       if (imageUrl === '' || inputValue === '') {
         alert('Загрузите фото и опишите его');
       } else {

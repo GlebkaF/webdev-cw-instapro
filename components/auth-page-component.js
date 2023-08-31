@@ -81,16 +81,10 @@ export function renderAuthPageComponent({ appEl, setUser }) {
       if (isLoginMode) {
         const login = document
           .getElementById('login-input')
-          .value.replaceAll('&', '&amp;')
-          .replaceAll('<', '&lt;')
-          .replaceAll('>', '&gt;')
-          .replaceAll('"', '&quot;');
+          .value;
         const password = document
           .getElementById('password-input')
-          .value.replaceAll('&', '&amp;')
-          .replaceAll('<', '&lt;')
-          .replaceAll('>', '&gt;')
-          .replaceAll('"', '&quot;');
+          .value;
 
         if (!login) {
           alert('Введите логин');
@@ -116,22 +110,13 @@ export function renderAuthPageComponent({ appEl, setUser }) {
       } else {
         const login = document
           .getElementById('login-input')
-          .value.replaceAll('&', '&amp;')
-          .replaceAll('<', '&lt;')
-          .replaceAll('>', '&gt;')
-          .replaceAll('"', '&quot;');
+          .value;
         const name = document
           .getElementById('name-input')
-          .value.replaceAll('&', '&amp;')
-          .replaceAll('<', '&lt;')
-          .replaceAll('>', '&gt;')
-          .replaceAll('"', '&quot;');
+          .value;
         const password = document
           .getElementById('password-input')
-          .value.replaceAll('&', '&amp;')
-          .replaceAll('<', '&lt;')
-          .replaceAll('>', '&gt;')
-          .replaceAll('"', '&quot;');
+          .value;
         if (!name) {
           alert('Введите имя');
           return;
