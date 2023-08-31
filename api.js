@@ -130,7 +130,7 @@ export function setPostLike({ id, token }) {
     })
     .catch((error) => {
       console.log(error.message);
-      alert(error.message)
+      alert('Лайк могут ставить только авторизованные пользователи')
     });
 }
 
@@ -152,7 +152,7 @@ export function setPostDisLike({ id, token }) {
     })
     .catch((error) => {
       console.log(error.message);
-      alert(error.message)
+      alert('Лайк могут ставить только авторизованные пользователи')
     });
 }
 
