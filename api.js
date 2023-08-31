@@ -124,7 +124,7 @@ export function setPostLike({ id, token }) {
   })
     .then((response) => {
       if (response.status === 401) {
-        throw new Error('Нет авторизации');
+        throw new Error('Лайк могут ставить только авторизованные пользователи');
       }
       return response.json();
     })
@@ -146,7 +146,7 @@ export function setPostDisLike({ id, token }) {
   })
     .then((response) => {
       if (response.status === 401) {
-        throw new Error('Нет авторизации');
+        throw new Error('Лайк могут ставить только авторизованные пользователи');
       }
       return response.json();
     })
