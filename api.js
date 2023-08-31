@@ -124,13 +124,13 @@ export function setPostLike({ id, token }) {
   })
     .then((response) => {
       if (response.status === 401) {
-        throw new Error('Лайк могут ставить только авторизованные пользователи');
+        throw new Error('Нет авторизации');
       }
       return response.json();
     })
     .catch((error) => {
       console.log(error.message);
-      alert(error.message)
+      alert('Лайк могут ставить только авторизованные пользователи')
     });
 }
 
@@ -146,13 +146,13 @@ export function setPostDisLike({ id, token }) {
   })
     .then((response) => {
       if (response.status === 401) {
-        throw new Error('Лайк могут ставить только авторизованные пользователи');
+        throw new Error('Нет авторизации');
       }
       return response.json();
     })
     .catch((error) => {
       console.log(error.message);
-      alert(error.message)
+      alert('Лайк могут ставить только авторизованные пользователи')
     });
 }
 

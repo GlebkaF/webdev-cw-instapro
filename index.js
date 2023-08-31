@@ -71,7 +71,7 @@ export const goToPage = (newPage, data) => {
     if (newPage === USER_POSTS_PAGE) {
       // Загружает страницу с постами юзера
 
-      console.log("Открываю страницу пользователя: ", data.userId);
+      console.log("Страница пользователя: ", data.userId);
       page = LOADING_PAGE;
       renderApp();
       const id = data.userId;
