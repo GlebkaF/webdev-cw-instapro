@@ -1,7 +1,7 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import {getToken, goToPage} from "../index.js";
-import {addLike} from "../api.js";
+import {addLike, removeLike} from "../api.js";
 
 export function renderPostsPageComponent({ appEl, posts, forceUpdate }) {
   // TODO: реализовать рендер постов из api
@@ -68,7 +68,7 @@ export function renderPostsPageComponent({ appEl, posts, forceUpdate }) {
 
 
       // если стоит лайк, то
-      // removeLike()
+      removeLike()
 
       // а если не стоит лайк
       addLike({
