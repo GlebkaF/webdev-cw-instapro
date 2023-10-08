@@ -65,9 +65,32 @@ export function renderPostsPageComponent({ appEl, posts, forceUpdate }) {
     likeButtonEl.addEventListener("click", () => {
       // получить данные стоит лайк или нет
       // можно через data атрибут likeButtonEl.dataset.isliked,
-
-
-      // если стоит лайк, то
+      let id = likeButtonEl.dataset.isLiked;
+      let token = getToken();
+      console.log(token)
+      if (token === undefined) {
+        alert("Вы не авторизированы")
+      } else {
+        likeButtonEl.dataset.isLiked === "true" ?
+          removeLike({ id, token })
+            .then((responseData) => {
+              likeButton.innerHTML =
+                `<img src="./assets/images/like-not-active.svg">`
+              clickLikeElement({ likeButton, responseData });
+              likeButtonEl.dataset.isLiked = "false"
+            })
+          :
+          addLike({ id, token })
+            .then((responseData) => {
+              likeButton.innerHTML =
+                `<img src="./assets/images/like-active.svg">`
+              clickLikeElement({ likeButton, responseData });
+              likeButtonEl.dataset.isLiked = "true"
+            })
+      }});
+    }
+  
+      /*// если стоит лайк, то
       removeLike()
 
       // а если не стоит лайк
@@ -78,5 +101,4 @@ export function renderPostsPageComponent({ appEl, posts, forceUpdate }) {
         forceUpdate();
       });
     });
-  }
-}
+  }*/
