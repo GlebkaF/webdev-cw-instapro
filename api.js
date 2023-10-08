@@ -108,8 +108,8 @@ export function addPost({ description, imageUrl }) {
   });
 }
 
-export function addLike({ token, postId }) {
-  return fetch(`${postsHost}/${postId}/like`, {
+export function addLike({ token, id }) {
+  return fetch(`${postsHost}/${id}/like`, {
     method: "POST",
     headers: {
       Authorization: token,
@@ -127,8 +127,8 @@ export function addLike({ token, postId }) {
       });
 }
 
-export function removeLike({ token, postId}) {
-  return fetch(`${postsHost}/${postId}/dislike`, {
+export function removeLike({ token, id}) {
+  return fetch(`${postsHost}/${id}/dislike`, {
     method: "POST",
     headers: {
       Authorization: token,

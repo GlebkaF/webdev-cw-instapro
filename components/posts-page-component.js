@@ -1,7 +1,7 @@
-import { USER_POSTS_PAGE } from "../routes.js";
+import { POSTS_PAGE, USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import {getToken, goToPage} from "../index.js";
-import {addLike, removeLike} from "../api.js";
+import { getToken, goToPage } from "../index.js";
+import { addLike, removeLike } from "../api.js";
 
 export function renderPostsPageComponent({ appEl, posts, forceUpdate }) {
   // TODO: реализовать рендер постов из api
@@ -12,8 +12,9 @@ export function renderPostsPageComponent({ appEl, posts, forceUpdate }) {
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
    */
 
-  const allPosts = posts.map((post) => {
-    return `<li class="post">
+  const allPosts = posts
+    .map((post) => {
+      return `<li class="post">
     <div class="post-header" data-user-id="${post.user.id}">
         <img src="${post.user.imageUrl}" class="post-header__user-image">
         <p class="post-header__user-name">${post.user.name}</p>
@@ -22,8 +23,14 @@ export function renderPostsPageComponent({ appEl, posts, forceUpdate }) {
       <img class="post-image" src="${post.imageUrl}">
     </div>
     <div class="post-likes">
-      <button data-post-id="${post.id}" data-isliked="${post.isLiked}" class="like-button">
-        <img src="${post.isLiked ? './assets/images/like-active.svg' : './assets/images/like-not-active.svg'}">
+      <button data-post-id="${post.id}" data-isliked="${
+        post.isLiked
+      }" class="like-button">
+        <img src="${
+          post.isLiked
+            ? "./assets/images/like-active.svg"
+            : "./assets/images/like-not-active.svg"
+        }">
       </button>
       <p class="post-likes-text">
         Нравится: <strong>${post.likes.length}</strong>
@@ -36,8 +43,9 @@ export function renderPostsPageComponent({ appEl, posts, forceUpdate }) {
     <p class="post-date">
       19 минут назад
     </p>
-  </li>`
-  }).join('');
+  </li>`;
+    })
+    .join("");
 
   const appHtml = `
               <div class="page-container">
@@ -65,41 +73,44 @@ export function renderPostsPageComponent({ appEl, posts, forceUpdate }) {
     likeButtonEl.addEventListener("click", () => {
       // получить данные стоит лайк или нет
       // можно через data атрибут likeButtonEl.dataset.isliked,
-      let id = likeButtonEl.dataset.isLiked;
+      let id = likeButtonEl.dataset.postId;
       let token = getToken();
-      console.log(token)
-      if (token === undefined) {
-        alert("Вы не авторизированы")
-      } else {
-        likeButtonEl.dataset.isLiked === "true" ?
-          removeLike({ id, token })
-            .then((responseData) => {
-              likeButtonEl.innerHTML =
-                `<img src="./assets/images/like-not-active.svg">`
-              clickLikeElement({ likeButton, responseData });
-              likeButtonEl.dataset.isLiked = "false"
-            })
-          :
-          addLike({ id, token })
-            .then((responseData) => {
-              likeButtonEl.innerHTML =
-                `<img src="./assets/images/like-active.svg">`
-              clickLikeElement({ likeButton, responseData });
-              likeButtonEl.dataset.isLiked = "true"
-            })
-      }});
-    }
-  
-      /*// если стоит лайк, то
-      removeLike()
 
-      // а если не стоит лайк
-      addLike({
-        token: getToken(),
-        postId: likeButtonEl.dataset.postId,
-      }).then(() => {
-        forceUpdate();
-      });
+      if (token === undefined) {
+        alert("Вы не авторизированы");
+      } else {
+        likeButtonEl.dataset.isliked === "true"
+          ? removeLike({ id, token }).then((responseData) => {
+              posts = posts.map((post) =>
+                post.id === responseData.post.id
+                  ? { ...post, likes: responseData.post.likes, isLiked: false }
+                  : post
+              );
+              likeButtonEl.innerHTML = `<img src="./assets/images/like-not-active.svg">`;
+              renderPostsPageComponent({
+                appEl,
+                posts,
+                forceUpdate: () => {
+                  goToPage(POSTS_PAGE);
+                },
+              });
+            })
+          : addLike({ id, token }).then((responseData) => {
+              posts = posts.map((post) =>
+                post.id === responseData.post.id
+                  ? { ...post, likes: responseData.post.likes, isLiked: true }
+                  : post
+              );
+              likeButtonEl.innerHTML = `<img src="./assets/images/like-active.svg">`;
+              renderPostsPageComponent({
+                appEl,
+                posts,
+                forceUpdate: () => {
+                  goToPage(POSTS_PAGE);
+                },
+              });
+            });
+      }
     });
-  }*/
+  }
 }
