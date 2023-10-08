@@ -74,7 +74,7 @@ export function renderPostsPageComponent({ appEl, posts, forceUpdate }) {
         likeButtonEl.dataset.isLiked === "true" ?
           removeLike({ id, token })
             .then((responseData) => {
-              likeButton.innerHTML =
+              likeButtonEl.innerHTML =
                 `<img src="./assets/images/like-not-active.svg">`
               clickLikeElement({ likeButton, responseData });
               likeButtonEl.dataset.isLiked = "false"
@@ -82,7 +82,7 @@ export function renderPostsPageComponent({ appEl, posts, forceUpdate }) {
           :
           addLike({ id, token })
             .then((responseData) => {
-              likeButton.innerHTML =
+              likeButtonEl.innerHTML =
                 `<img src="./assets/images/like-active.svg">`
               clickLikeElement({ likeButton, responseData });
               likeButtonEl.dataset.isLiked = "true"
@@ -102,3 +102,4 @@ export function renderPostsPageComponent({ appEl, posts, forceUpdate }) {
       });
     });
   }*/
+}
