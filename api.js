@@ -1,6 +1,6 @@
 const personalKey = "atamyrat-isayev";
 const defaultKey = "prod"
-const baseHost = "https://webdev-hw-api.vercel.app";
+const baseHost = " https://wedev-api.sky.pro/api/v1";
 const postsHost = `${baseHost}/api/v1/${defaultKey}/instapro`;
 
 export function getPosts({ token }) {
