@@ -1,4 +1,4 @@
-import { getPosts } from "./api.js";
+import { getPosts, getUserPosts } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -15,14 +15,17 @@ import {
   removeUserFromLocalStorage,
   saveUserToLocalStorage,
 } from "./helpers.js";
-
 import { renderUserPostsPageComponent } from "./components/renderUserPostsPageComponent.js";
+// import { cliskLike } from "./components/click-like-component.js";
+
+// let userN = localStorage.getItem("user");
+// console.log(userN);
 
 export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
 
-const getToken = () => {
+export const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
   return token;
 };
@@ -134,7 +137,7 @@ const renderApp = () => {
   }
 
   if (page === USER_POSTS_PAGE) {
-    // TODO: реализовать страницу фотографию пользoвателя
+    // TODO: реализовать страницу фотографию пользвателя
     console.log(posts);
     // appEl.innerHTML = "Здесь будет страница фотографий пользователя";
     return renderUserPostsPageComponent({
