@@ -1,3 +1,5 @@
+//upload picture page
+
 import { uploadImage } from "../api.js";
 
 export function renderUploadImageComponent({ element, onImageUrlChange }) {
