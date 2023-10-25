@@ -1,10 +1,6 @@
-import { renderPostsPageComponent } from './components/posts-page-component.js'
-import { setPosts } from './index.js'
-import { format } from 'date-fns'
-
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
-const personalKey = 'christina-ermolenko'
+const personalKey = 'prod'
 const baseHost = 'https://webdev-hw-api.vercel.app'
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`
 
@@ -22,30 +18,8 @@ export function getPosts({ token }) {
 
             return response.json()
         })
-        .then((responseData) => {
-            const appPost = responseData.posts.map((post) => {
-                const createDate = format(
-                    new Date(post.date),
-                    'dd.MM.yyyy hh:mm',
-                )
-                return {
-                    id: post.id,
-                    imageUrl: post.imageUrl,
-                    createdAt: createDate,
-                    description: post.description,
-                    user: {
-                        id: post.user.id,
-                        name: post.user.name,
-                        login: post.user.login,
-                        imageUrl: post.user.imageUrl,
-                    },
-                    likes: [{ id: post.user.id, name: post.user.name }],
-                    isLiked: post.isLiked,
-                }
-            })
-
-            setPosts(appPost)
-            renderPostsPageComponent()
+        .then((data) => {
+            return data.posts
         })
         .catch((error) => {
             alert('Кажется, у вас сломался интернет, попробуйте позже')
