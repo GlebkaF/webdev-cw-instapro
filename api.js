@@ -1,6 +1,9 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
+
+import { setPosts } from './index.js'
+
 // "боевая" версия инстапро лежит в ключе prod
-const personalKey = 'prod'
+const personalKey = 'christina-ermolenko'
 const baseHost = 'https://webdev-hw-api.vercel.app'
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`
 
@@ -15,10 +18,10 @@ export function getPosts({ token }) {
             if (response.status === 401) {
                 throw new Error('Нет авторизации')
             }
-
             return response.json()
         })
         .then((data) => {
+            setPosts(data.posts)
             return data.posts
         })
         .catch((error) => {
@@ -73,4 +76,49 @@ export function uploadImage({ file }) {
     }).then((response) => {
         return response.json()
     })
+}
+
+export function addPost({ token, description, imageUrl }) {
+    return fetch(postsHost, {
+        method: 'POST',
+        body: JSON.stringify({
+            description,
+            imageUrl,
+        }),
+        headers: {
+            Authorization: token,
+        },
+    }).then((response) => {
+        if (response.status === 400) {
+            alert('Заполнены не все поля: фото, описание')
+            throw new Error('Некорректно введены данные')
+        } else {
+            return response.json()
+        }
+    })
+}
+
+export function getPostsOneUser({ token, id }) {
+    return fetch(`${postsHost}'/user-posts/'${id}`, {
+        method: 'GET',
+        headers: {
+            Authorization: token,
+        },
+    })
+        .then((response) => {
+            if (response.status === 401) {
+                throw new Error('Нет авторизации')
+            }
+            return response.json()
+        })
+        .then((data) => {
+            setPosts(data.posts)
+            return data.posts
+        })
+        .catch((error) => {
+            alert('Кажется, у вас сломался интернет, попробуйте позже')
+
+            //отправка в систему сбора ошибок
+            console.warn(error)
+        })
 }

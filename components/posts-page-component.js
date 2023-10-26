@@ -30,7 +30,7 @@ export function renderPostsPageComponent() {
             return `<div class="page-container">
           <div class="header-container"></div>
           <ul class="posts">
-            <li class="post">
+            <li class="post" data-id="${post.postId}">
               <div class="post-header" data-user-id="${post.userId}">
                 <img src="${post.userImageUrl}" class="post-header-user-image">
                 <p class="post-header-user-name">${post.userName}</p>
