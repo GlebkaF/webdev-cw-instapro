@@ -1,4 +1,4 @@
-import { addPost, getPosts, getPostsOneUser } from './api.js'
+import { addPost, getPosts } from './api.js'
 import { renderAddPostPageComponent } from './components/add-post-page-component.js'
 import { renderAuthPageComponent } from './components/auth-page-component.js'
 import {
