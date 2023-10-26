@@ -98,13 +98,16 @@ export function addPost({ token, description, imageUrl }) {
     })
 }
 
-export function getPostsOneUser({ token, id }) {
-    return fetch(`${postsHost}'/user-posts/'${id}`, {
-        method: 'GET',
-        headers: {
-            Authorization: token,
+export function getPostsOneUser({ token, userId }) {
+    return fetch(
+        `${baseHost}/api/v1/${personalKey}/instapro/user-posts/${userId}`,
+        {
+            method: 'GET',
+            headers: {
+                Authorization: token,
+            },
         },
-    })
+    )
         .then((response) => {
             if (response.status === 401) {
                 throw new Error('Нет авторизации')
@@ -117,8 +120,6 @@ export function getPostsOneUser({ token, id }) {
         })
         .catch((error) => {
             alert('Кажется, у вас сломался интернет, попробуйте позже')
-
-            //отправка в систему сбора ошибок
             console.warn(error)
         })
 }
