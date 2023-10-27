@@ -4,7 +4,7 @@ import { setPosts } from './index.js'
 
 // "боевая" версия инстапро лежит в ключе prod
 const personalKey = 'christina-ermolenko'
-const baseHost = 'https://webdev-hw-api.vercel.app'
+const baseHost = 'https://wedev-api.sky.pro'
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`
 
 export function getPosts({ token }) {
@@ -99,15 +99,12 @@ export function addPost({ token, description, imageUrl }) {
 }
 
 export function getPostsOneUser({ token, userId }) {
-    return fetch(
-        `${baseHost}/api/v1/${personalKey}/instapro/user-posts/${userId}`,
-        {
-            method: 'GET',
-            headers: {
-                Authorization: token,
-            },
+    return fetch(`${postsHost}/user-posts/${userId}`, {
+        method: 'GET',
+        headers: {
+            Authorization: token,
         },
-    )
+    })
         .then((response) => {
             if (response.status === 401) {
                 throw new Error('Нет авторизации')
@@ -122,4 +119,15 @@ export function getPostsOneUser({ token, userId }) {
             alert('Кажется, у вас сломался интернет, попробуйте позже')
             console.warn(error)
         })
+}
+
+export function addLikePost({ token, postId }) {
+    return fetch(`${postsHost}/${postId}/like`, {
+        method: 'POST',
+        headers: {
+            Authorization: token,
+        },
+    }).then((response) => {
+        return response.json()
+    })
 }

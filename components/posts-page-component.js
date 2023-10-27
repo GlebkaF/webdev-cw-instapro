@@ -1,9 +1,10 @@
 import { USER_POSTS_PAGE } from '../routes.js'
 import { renderHeaderComponent } from './header-component.js'
-import { goToPage } from '../index.js'
+import { getToken, goToPage } from '../index.js'
 import { posts } from '../index.js'
 import { formatDistanceToNow } from 'date-fns'
 import { ru } from 'date-fns/locale'
+import { addLikeEventListeners } from '../helpers.js'
 
 export function renderPostsPageComponent() {
     const appEl = document.getElementById('app')
@@ -39,9 +40,7 @@ export function renderPostsPageComponent() {
                 <img class="post-image" src="${post.imageUrl}">
               </div>
               <div class="post-likes">
-                <button data-index="${index}" data-post-id="${
-                    post.postId
-                }" class="like-button">
+                <button data-index="${index}" class="like-button">
                   <img src="${
                       post.isLiked
                           ? './assets/images/like-active.svg'
@@ -49,7 +48,9 @@ export function renderPostsPageComponent() {
                   }">
                 </button>
                 <p class="post-likes-text">
-                  Нравится: <strong>2</strong>
+                  Нравится: ${post.likes}<strong>и еще ${
+                      post.likeCount
+                  }</strong>
                 </p>
               </div>
               <p class="post-text">
@@ -78,4 +79,6 @@ export function renderPostsPageComponent() {
             })
         })
     }
+
+    addLikeEventListeners({ token: getToken() })
 }
