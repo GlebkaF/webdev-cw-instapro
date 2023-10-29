@@ -188,20 +188,25 @@ export function likeEventListenerOnIMG() {
 }
 
 export function deletePostEventListener() {
-    const deleteButton = document.getElementById('button-delete')
+    const deleteButtons = document.querySelectorAll('.delete-button')
 
-    deleteButton.addEventListener('click', (event) => {
-        event.stopPropagation()
-        //поиск элементов
-        const postId = deleteButton.dataset.postId
-        const postHeader = document.querySelector('.post-header')
-        const userId = postHeader.dataset.userId
+    deleteButtons.forEach((deleteButton) => {
+        deleteButton.addEventListener('click', (event) => {
+            event.stopPropagation()
 
-        delPost({ token: getToken(), postId }).then(() => {
-            getPosts({ token: getToken(), userId }).then((response) => {
-                setPosts(response)
-                renderApp()
-            })
+            const postId = deleteButton.dataset.postId
+            const postElement = deleteButton.closest('.post')
+            if (postElement) {
+                const userId =
+                    postElement.querySelector('.post-header').dataset.userId
+
+                delPost({ token: getToken(), postId }).then(() => {
+                    getPosts({ token: getToken(), userId }).then((response) => {
+                        setPosts(response)
+                        renderApp()
+                    })
+                })
+            }
         })
     })
 }
