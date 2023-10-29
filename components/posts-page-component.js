@@ -1,10 +1,9 @@
 import { USER_POSTS_PAGE } from '../routes.js'
 import { renderHeaderComponent } from './header-component.js'
-import { getToken, goToPage } from '../index.js'
-import { posts } from '../index.js'
+import { getToken, goToPage, posts, renderApp, setPosts } from '../index.js'
 import { formatDistanceToNow } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import { addLikeEventListeners } from '../helpers.js'
+import { addLikePost, dislikePost, getPosts } from '../api'
 
 export function renderPostsPageComponent() {
     const appEl = document.getElementById('app')
@@ -21,26 +20,30 @@ export function renderPostsPageComponent() {
             userName: post.user.name,
             userLogin: post.user.login,
             userImageUrl: post.user.imageUrl,
-            likes: [{ id: post.user.id, name: post.user.name }],
+            usersLikes: post.likes,
             isLiked: post.isLiked,
         }
     })
 
-    const appHtml = getPosts
+    const appHTML = getPosts
         .map((post, index) => {
             return `<div class="page-container">
-          <div class="header-container"></div>
-          <ul class="posts">
+            <div class="header-container"></div>
+            <ul id="list" class="posts">
             <li class="post" data-id="${post.postId}">
               <div class="post-header" data-user-id="${post.userId}">
                 <img src="${post.userImageUrl}" class="post-header-user-image">
                 <p class="post-header-user-name">${post.userName}</p>
               </div>
               <div class="post-image-container">
-                <img class="post-image" src="${post.imageUrl}">
+                <img class="post-image" data-post-id="${post.postId}" src="${
+                    post.imageUrl
+                }" data-index="${index}">
               </div>
               <div class="post-likes">
-                <button data-index="${index}" class="like-button">
+                <button data-post-id="${post.postId}" data-like="${
+                    post.isLiked ? 'true' : ''
+                }" data-index="${index}" class="like-button">
                   <img src="${
                       post.isLiked
                           ? './assets/images/like-active.svg'
@@ -48,9 +51,17 @@ export function renderPostsPageComponent() {
                   }">
                 </button>
                 <p class="post-likes-text">
-                  Нравится: ${post.likes}<strong>и еще ${
-                      post.likeCount
-                  }</strong>
+                Нравится: ${
+                    post.usersLikes.length > 0
+                        ? `${
+                              post.usersLikes[post.usersLikes.length - 1].name
+                          } ${
+                              post.usersLikes.length - 1 > 0
+                                  ? 'и ещё ' + (post.usersLikes.length - 1)
+                                  : ''
+                          }`
+                        : '0'
+                }
                 </p>
               </div>
               <p class="post-text">
@@ -61,12 +72,13 @@ export function renderPostsPageComponent() {
                 ${post.createdAt} назад
               </p>
             </li>
-          </ul>
-        </div>`
+            </ul>
+          </div>
+        `
         })
         .join('')
 
-    appEl.innerHTML = appHtml
+    appEl.innerHTML = appHTML
 
     renderHeaderComponent({
         element: document.querySelector('.header-container'),
@@ -80,5 +92,90 @@ export function renderPostsPageComponent() {
         })
     }
 
-    addLikeEventListeners({ token: getToken() })
+    likeEventListener({ token: getToken() })
+    likeEventListenerOnIMG({ token: getToken() })
+}
+
+export function likeEventListener() {
+    const likeButtons = document.querySelectorAll('.like-button')
+
+    likeButtons.forEach((likeButton) => {
+        likeButton.addEventListener('click', (event) => {
+            event.stopPropagation()
+            const postId = likeButton.dataset.postId
+            const index = likeButton.dataset.index
+            const postHeader = document.querySelector('.post-header')
+            const userId = postHeader.dataset.userId
+
+            if (posts[index].isLiked) {
+                dislikePost({ token: getToken(), postId })
+                    .then(() => {
+                        posts[index].isLiked = false
+                    })
+                    .then(() => {
+                        getPosts({ token: getToken(), userId }).then(
+                            (response) => {
+                                setPosts(response)
+                                renderApp()
+                            },
+                        )
+                    })
+            } else {
+                addLikePost({ token: getToken(), postId })
+                    .then(() => {
+                        posts[index].isLiked = true
+                    })
+                    .then(() => {
+                        getPosts({ token: getToken(), userId }).then(
+                            (response) => {
+                                setPosts(response)
+                                renderApp()
+                            },
+                        )
+                    })
+            }
+        })
+    })
+}
+
+export function likeEventListenerOnIMG() {
+    const likeButtons = document.querySelectorAll('.post-image')
+
+    likeButtons.forEach((likeButton) => {
+        likeButton.addEventListener('dblclick', (event) => {
+            event.stopPropagation()
+            const postId = likeButton.dataset.postId
+            const index = likeButton.dataset.index
+            const postHeader = document.querySelector('.post-header')
+            const userId = postHeader.dataset.userId
+
+            if (posts[index].isLiked) {
+                dislikePost({ token: getToken(), postId })
+                    .then(() => {
+                        posts[index].isLiked = false
+                    })
+                    .then(() => {
+                        getPosts({ token: getToken(), userId }).then(
+                            (response) => {
+                                setPosts(response)
+                                renderApp()
+                            },
+                        )
+                    })
+            } else {
+                addLikePost({ token: getToken(), postId })
+                    .then(() => {
+                        posts[index].isLiked = true
+                    })
+                    .then(() => {
+                        getPosts({ token: getToken(), userId }).then(
+                            (response) => {
+                                setPosts(response)
+                                renderApp()
+                            },
+                        )
+                    })
+            }
+        })
+    })
 }

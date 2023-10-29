@@ -128,6 +128,26 @@ export function addLikePost({ token, postId }) {
             Authorization: token,
         },
     }).then((response) => {
+        if (response.status === 401) {
+            alert('Лайкать посты могут только авторизованные пользователи')
+            throw new Error('Нет авторизации')
+        }
+
+        return response.json()
+    })
+}
+
+export function dislikePost({ token, postId }) {
+    return fetch(`${postsHost}/${postId}/dislike`, {
+        method: 'POST',
+        headers: {
+            Authorization: token,
+        },
+    }).then((response) => {
+        if (response.status === 401) {
+            throw new Error('Нет авторизации')
+        }
+
         return response.json()
     })
 }
