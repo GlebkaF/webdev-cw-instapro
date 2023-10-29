@@ -78,11 +78,16 @@ export function uploadImage({ file }) {
     })
 }
 
-export function addPost({ token, description, imageUrl }) {
+export function addPost({ token, imageUrl }) {
+    const descriptionInputElement = document.getElementById('description')
     return fetch(postsHost, {
         method: 'POST',
         body: JSON.stringify({
-            description,
+            description: descriptionInputElement.value
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;'),
             imageUrl,
         }),
         headers: {
