@@ -149,8 +149,6 @@ export const renderApp = () => {
     }
 
     if (page === USER_POSTS_PAGE) {
-        // TODO: реализовать страницу фотографию пользвателя
-        // appEl.innerHTML = 'Здесь будет страница фотографий пользователя'
         return renderPostsPageComponent({
             appEl,
         })

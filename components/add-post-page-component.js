@@ -1,9 +1,9 @@
 import { renderUploadImageComponent } from './upload-image-component.js'
+import { renderHeaderComponent } from './header-component.js'
 
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
     let imageUrl = ''
 
-    // TODO: Реализовать страницу добавления поста
     const appHtml = `<div class="page-container">
       <div class="header-container"></div>
         <div class="form">
@@ -27,6 +27,10 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
   `
 
     appEl.innerHTML = appHtml
+
+    renderHeaderComponent({
+        element: document.querySelector('.header-container'),
+    })
 
     renderUploadImageComponent({
         element: document.querySelector('.upload-image-container'),

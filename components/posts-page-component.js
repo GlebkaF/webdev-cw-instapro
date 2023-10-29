@@ -3,7 +3,7 @@ import { renderHeaderComponent } from './header-component.js'
 import { getToken, goToPage, posts, renderApp, setPosts } from '../index.js'
 import { formatDistanceToNow } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import { addLikePost, dislikePost, getPosts } from '../api'
+import { addLikePost, delPost, dislikePost, getPosts } from '../api'
 
 export function renderPostsPageComponent() {
     const appEl = document.getElementById('app')
@@ -31,9 +31,15 @@ export function renderPostsPageComponent() {
             <div class="header-container"></div>
             <ul id="list" class="posts">
             <li class="post" data-id="${post.postId}">
+            <div class="post-header-container">
               <div class="post-header" data-user-id="${post.userId}">
                 <img src="${post.userImageUrl}" class="post-header-user-image">
-                <p class="post-header-user-name">${post.userName}</p>
+                <p class="post-header-user-name">${post.userName}</p></div>
+                <div class="delete-button-container">
+                <button class="delete-button" id="button-delete" data-post-id="${
+                    post.postId
+                }">Удалить</button>
+              </div>
               </div>
               <div class="post-image-container">
                 <img class="post-image" data-post-id="${post.postId}" src="${
@@ -94,6 +100,7 @@ export function renderPostsPageComponent() {
 
     likeEventListener({ token: getToken() })
     likeEventListenerOnIMG({ token: getToken() })
+    deletePostEventListener({ token: getToken() })
 }
 
 export function likeEventListener() {
@@ -176,6 +183,25 @@ export function likeEventListenerOnIMG() {
                         )
                     })
             }
+        })
+    })
+}
+
+export function deletePostEventListener() {
+    const deleteButton = document.getElementById('button-delete')
+
+    deleteButton.addEventListener('click', (event) => {
+        event.stopPropagation()
+        //поиск элементов
+        const postId = deleteButton.dataset.postId
+        const postHeader = document.querySelector('.post-header')
+        const userId = postHeader.dataset.userId
+
+        delPost({ token: getToken(), postId }).then(() => {
+            getPosts({ token: getToken(), userId }).then((response) => {
+                setPosts(response)
+                renderApp()
+            })
         })
     })
 }

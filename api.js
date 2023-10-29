@@ -1,8 +1,5 @@
-// Замени на свой, чтобы получить независимый от других набор данных.
+import { renderApp, setPosts } from './index.js'
 
-import { setPosts } from './index.js'
-
-// "боевая" версия инстапро лежит в ключе prod
 const personalKey = 'christina-ermolenko'
 const baseHost = 'https://wedev-api.sky.pro'
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`
@@ -74,7 +71,13 @@ export function uploadImage({ file }) {
         method: 'POST',
         body: data,
     }).then((response) => {
-        return response.json()
+        if (response.status === 400) {
+            alert('Размер изображения превышает установленный')
+            renderApp()
+            throw new Error('Слишком большое изображение')
+        } else {
+            return response.json()
+        }
     })
 }
 
@@ -100,6 +103,17 @@ export function addPost({ token, imageUrl }) {
         } else {
             return response.json()
         }
+    })
+}
+
+export function delPost({ token, postId }) {
+    return fetch(`${postsHost}/${postId}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: token,
+        },
+    }).then((response) => {
+        return response.json()
     })
 }
 

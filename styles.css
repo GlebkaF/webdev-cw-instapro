@@ -46,6 +46,11 @@
     margin: 0;
 }
 
+.post-header-container {
+    display: flex;
+    justify-content: space-between;
+}
+
 .post-header {
     display: flex;
     flex-direction: row;
@@ -195,4 +200,16 @@
     box-sizing: border-box;
     width: 100%;
     text-align: center;
+}
+
+.delete-button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.delete-button {
+    height: 20px;
+    width: 70px;
+    margin-bottom: 10px;
 }
