@@ -21,15 +21,18 @@ export let page = null;
 export let posts = [];
 
 const getToken = () => {
-  const token = user ? `Bearer ${user.token}` : undefined;
+  const token = user ? `Bearer ${user.token}` : null;
   return token;
 };
 
+
+// Функция выхода из приложения 
 export const logout = () => {
   user = null;
   removeUserFromLocalStorage();
   goToPage(POSTS_PAGE);
 };
+
 
 /**
  * Включает страницу приложения
@@ -129,5 +132,7 @@ const renderApp = () => {
     return;
   }
 };
-
 goToPage(POSTS_PAGE);
+
+
+

@@ -1,11 +1,12 @@
-// Замени на свой, чтобы получить независимый от других набор данных.
-// "боевая" версия инстапро лежит в ключе prod
-const personalKey = "alex_potapov";
-const baseUrl = `https://wedev-api.sky.pro/api/v1/${personalKey}/instapro`;
-// const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
+ export const personalKey = "sergei-stepanov";
+ const postsHost = `https://wedev-api.sky.pro/api/v1/${personalKey}/instapro/`
+ 
 
+
+
+// Получает из API список постов 
 export function getPosts({ token }) {
-  return fetch(baseUrl, {
+  return fetch(postsHost, {
     method: "GET",
     headers: {
       Authorization: token,
@@ -25,7 +26,7 @@ export function getPosts({ token }) {
 
 // Регистрация
 export function registerUser({ login, password, name, imageUrl }) {
-  return fetch("https://wedev-api.sky.pro/api/user", {
+  return fetch(postsHost + "/api/user", {
     method: "POST",
     body: JSON.stringify({
       login,
@@ -40,9 +41,10 @@ export function registerUser({ login, password, name, imageUrl }) {
     return response.json();
   });
 }
+
 // Авторизация
 export function loginUser({ login, password }) {
-  return fetch("https://wedev-api.sky.pro/api/user/login", {
+  return fetch(postsHost + "/api/user/login", {
     method: "POST",
     body: JSON.stringify({
       login,
@@ -61,10 +63,57 @@ export function uploadImage({ file }) {
   const data = new FormData();
   data.append("file", file);
 
-  return fetch("https://wedev-api.sky.pro/api/upload/image", {
+  return fetch(postsHost + "/api/upload/image", {
     method: "POST",
     body: data,
   }).then((response) => {
     return response.json();
   });
+}
+
+
+// Функция лайков
+export function addLike(id) {
+  return fetch(`${postsHost}/${id}/like`, {
+    method: "POST",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((responseData) => {
+      console.log(responseData);
+    });
+}
+
+//Убрать лайк
+export function deleteLike(id) {
+  return fetch(`${postsHost}/${id}/dislike`, {
+    method: "POST",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((responseData) => {
+      console.log(responseData);
+    });
+}
+
+export function addPost({ token,imageUrl, description}){
+  return fetch(postsHost, {
+    method: "POST",
+    headers:{
+      Authorization: token,
+      
+    },
+    body: JSON.stringify({
+      imageUrl: "https://storage.yandexcloud.net/skypro-webdev-homework-bucket/1683305583469-20220524_084001.jpg",
+      description, 
+    })
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((responseData) => {
+      console.log(responseData);
+    });
 }
