@@ -80,8 +80,8 @@ export function renderAuthPageComponent({ appEl, setUser }) {
       setError("");
 
       if (isLoginMode) {
-        const login = document.getElementById("login-input").value;
-        const password = document.getElementById("password-input").value;
+        const login = document.getElementById("login-input");
+        const password = document.getElementById("password-input");
 
         if (!login) {
           alert("Введите логин");
@@ -94,8 +94,8 @@ export function renderAuthPageComponent({ appEl, setUser }) {
         }
 
         loginUser({
-          login: login,
-          password: password,
+          login: sanitaze(login.value),
+          password: sanitaze(password.value),
         })
           .then((user) => {
             setUser(user.user);
