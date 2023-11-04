@@ -1,3 +1,5 @@
+import { addPost, uploadImage } from "../api.js";
+
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
   const render = () => {
     // TODO: Реализовать страницу добавления поста
@@ -31,10 +33,15 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
 
     appEl.innerHTML = appHtml;
 
+
+
+    // Тут по дефолту шла логика с кнопкой доьавить пост(фото)
+    let descriptionInput = document.querySelector(".input textarea");
+
     document.getElementById("add-button").addEventListener("click", () => {
-      onAddPostClick({
-        description: "Описание картинки",
-        imageUrl: "https://image.png",
+      addPost({
+        description: descriptionInput.value,
+        imageUrl: uploadImage(),
       });
     });
   };

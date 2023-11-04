@@ -66,8 +66,12 @@ export function uploadImage({ file }) {
   return fetch(postsHost + "/api/upload/image", {
     method: "POST",
     body: data,
-  }).then((response) => {
+  })
+  .then((response) => {
     return response.json();
+  })
+  .then((data) => {
+    console.log(data.fileUrl);
   });
 }
 
@@ -98,22 +102,30 @@ export function deleteLike(id) {
     });
 }
 
-export function addPost({ token,imageUrl, description}){
+export function addPost({ token, description, imageUrl}){
   return fetch(postsHost, {
     method: "POST",
     headers:{
       Authorization: token,
-      
     },
     body: JSON.stringify({
-      imageUrl: "https://storage.yandexcloud.net/skypro-webdev-homework-bucket/1683305583469-20220524_084001.jpg",
+      imageUrl,
       description, 
     })
   })
     .then((response) => {
+      if(response.status === 400){
+        throw new Error("Не хватает данных")
+      }
       return response.json();
     })
     .then((responseData) => {
       console.log(responseData);
-    });
+      getPosts()
+    })
+    .catch((error) => {
+      if(error.message === "Не хватает данных"){
+        alert("Вы передали не все данные")
+      } ;
+    })
 }
