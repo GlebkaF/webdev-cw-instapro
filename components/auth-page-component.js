@@ -1,6 +1,7 @@
 import { loginUser, registerUser } from "../api.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
+import { sanitaze } from "../sanitaze.js";
 
 export function renderAuthPageComponent({ appEl, setUser }) {
   let isLoginMode = true;
@@ -127,9 +128,9 @@ export function renderAuthPageComponent({ appEl, setUser }) {
         }
 
         registerUser({
-          login: login.value,
-          password: password.value,
-          name: name.value,
+          login: sanitaze(login.value),
+          password: sanitaze(password.value),
+          name: sanitaze(name.value),
           imageUrl,
         })
           .then((user) => {
