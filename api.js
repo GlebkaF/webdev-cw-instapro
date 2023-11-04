@@ -128,6 +128,8 @@ export function deleteLike(id) {
     });
 }
 
+
+// Добавить новый пост
 export function addPost({ token, description, imageUrl}){
   return fetch(postsHost, {
     method: "POST",
