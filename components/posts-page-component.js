@@ -22,7 +22,7 @@ export function renderPostsPageComponent({ appEl }) {
       <img class="post-image" src="${element.imageUrl}">
     </div>
     <div class="post-likes">
-      <button data-post-id="${element.id}" class="like-button">
+      <button data-id="${element.id}" class="like-button">
         <img src="./assets/images/like-active.svg">
       </button>
       <p class="post-likes-text">

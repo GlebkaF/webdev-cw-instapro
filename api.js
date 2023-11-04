@@ -1,8 +1,8 @@
- export const personalKey = "sergei-stepanov";
+import { user } from "./index.js";
+
+export const personalKey = "sergei-stepanov";
  const postsHost = `https://wedev-api.sky.pro/api/v1/${personalKey}/instapro/`
  
-
-
 
 // Получает из API список постов 
 export function getPosts({ token }) {
@@ -76,10 +76,33 @@ export function uploadImage({ file }) {
 }
 
 
+
+function likeForButtons(){
+  const likeButtons = document.querySelectorAll(".like-button")
+  for(const likeButton of likeButtons){
+    likeButton.addEventListener("click", () => {
+      if(!user){
+        alert("Войдите в систему")
+      }
+      let id = likeButton.dataset.id;
+      if(user){
+        addLike(id)
+      }else{
+        deleteLike(id)
+      }
+    })
+  }
+}
+likeForButtons()
+  
 // Функция лайков
 export function addLike(id) {
+  
   return fetch(`${postsHost}/${id}/like`, {
     method: "POST",
+    headers: {
+      Authorization: token,
+    }
   })
     .then((response) => {
       return response.json();
@@ -93,6 +116,9 @@ export function addLike(id) {
 export function deleteLike(id) {
   return fetch(`${postsHost}/${id}/dislike`, {
     method: "POST",
+    headers: {
+      Authorization: token,
+    }
   })
     .then((response) => {
       return response.json();
