@@ -104,9 +104,9 @@ export function renderAuthPageComponent({ appEl, setUser }) {
             setError(error.message);
           });
       } else {
-        const login = document.getElementById("login-input").value;
-        const name = document.getElementById("name-input").value;
-        const password = document.getElementById("password-input").value;
+        const login = document.getElementById("login-input");
+        const name = document.getElementById("name-input");
+        const password = document.getElementById("password-input");
         if (!name) {
           alert("Введите имя");
           return;
@@ -127,9 +127,9 @@ export function renderAuthPageComponent({ appEl, setUser }) {
         }
 
         registerUser({
-          login: login,
-          password: password,
-          name: name,
+          login: login.value,
+          password: password.value,
+          name: name.value,
           imageUrl,
         })
           .then((user) => {
