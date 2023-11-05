@@ -2,6 +2,7 @@ import { addPost, getPosts, uploadImage } from "../api.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
 import { getToken, goToPage } from "../index.js";
 import { POSTS_PAGE } from "../routes.js";
+import { sanitaze } from "../sanitaze.js";
 
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
  let imageUrl = "";
@@ -56,7 +57,7 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
 
     document.getElementById("add-button").addEventListener("click", () => {
       addPost({
-        description: descriptionInput.value,
+        description: sanitaze(descriptionInput.value),
         imageUrl: imageUrl,
         token: getToken(),
       })
