@@ -24,6 +24,7 @@ export function renderPostsPageComponent({ appEl }) {
     <div class="post-image-container">
       <img class="post-image" src="${element.imageUrl}">
     </div>
+    <div class="btn-container">
     <div class="post-likes">
       <button data-id="${element.id}" class="like-button">
         <img src="./assets/images/like-active.svg">
@@ -31,6 +32,10 @@ export function renderPostsPageComponent({ appEl }) {
       <p class="post-likes-text">
         Нравится: <strong>${element.likes.length}</strong>
       </p>
+    </div>
+    <div class="btn-block">
+      <button data-id="${element.id}" class="delete-button">Удалить пост</button>
+      </div>
     </div>
     <p class="post-text">
       <span class="user-name">${element.user.name}</span>
