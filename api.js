@@ -1,7 +1,7 @@
 import { user } from "./index.js";
 
 export const personalKey = "sergei-stepanov";
- const postsHost = `https://wedev-api.sky.pro/api/v1/${personalKey}/instapro/`
+ const postsHost = `https://wedev-api.sky.pro/api/v1/${personalKey}/instapro`
  
 
 // Получает из API список постов 
@@ -26,7 +26,7 @@ export function getPosts({ token }) {
 
 // Регистрация
 export function registerUser({ login, password, name, imageUrl }) {
-  return fetch(postsHost + "/api/user", {
+  return fetch("https://wedev-api.sky.pro/api/user", {
     method: "POST",
     body: JSON.stringify({
       login,
@@ -44,7 +44,7 @@ export function registerUser({ login, password, name, imageUrl }) {
 
 // Авторизация
 export function loginUser({ login, password }) {
-  return fetch(postsHost + "/api/user/login", {
+  return fetch("https://wedev-api.sky.pro/api/user/login", {
     method: "POST",
     body: JSON.stringify({
       login,
@@ -63,7 +63,7 @@ export function uploadImage({ file }) {
   const data = new FormData();
   data.append("file", file);
 
-  return fetch(postsHost + "/api/upload/image", {
+  return fetch(`${postsHost}/api/upload/image`, {
     method: "POST",
     body: data,
   })
