@@ -1,4 +1,4 @@
-import { addPost, uploadImage } from "../api.js";
+import { addPost, getPosts, uploadImage } from "../api.js";
 
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
   const render = () => {
@@ -42,7 +42,10 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
       addPost({
         description: descriptionInput.value,
         imageUrl: uploadImage(),
-      });
+      })
+      .then(() => {
+        getPosts({token})
+      })
     });
   };
 
