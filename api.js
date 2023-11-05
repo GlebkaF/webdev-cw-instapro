@@ -1,7 +1,11 @@
 import { user } from "./index.js";
 
-export const personalKey = "sergei-stepanov";
- const postsHost = `https://wedev-api.sky.pro/api/v1/${personalKey}/instapro`
+// export const personalKey = "sergei-stepanov";
+//  const postsHost = `https://wedev-api.sky.pro/api/v1/${personalKey}/instapro`
+
+ const personalKey = "sergei-stepanov";
+const baseHost = "https://webdev-hw-api.vercel.app";
+const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
  
 
 // Получает из API список постов 
@@ -43,7 +47,7 @@ export function registerUser({ login, password, name }) {
 
 // Авторизация
 export function loginUser({ login, password }) {
-  return fetch("https://wedev-api.sky.pro/api/user/login", {
+  return fetch( "https://wedev-api.sky.pro/api/user/login", {
     method: "POST",
     body: JSON.stringify({
       login,
@@ -62,7 +66,7 @@ export function uploadImage({ file }) {
   const data = new FormData();
   data.append("file", file);
 
-  return fetch("https://webdev-hw-api.vercel.app/api/upload/image", {    
+  return fetch(postsHost + "/api/upload/image", {    
     method: "POST",
     body: data,
   })
@@ -73,7 +77,6 @@ export function uploadImage({ file }) {
     console.log(data.fileUrl);
   });
 }
-
 
 
 function likeForButtons(){

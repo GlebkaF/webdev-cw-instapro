@@ -42,7 +42,7 @@ export function renderPostsPageComponent({ appEl }) {
       ${element.description}
     </p>
     <p class="post-date">
-      19 минут назад
+      ${element.createdAt}
     </p>
   </li>`
   }).join("")
