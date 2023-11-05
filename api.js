@@ -1,6 +1,5 @@
 import { goToPage, user } from "./index.js";
 import { POSTS_PAGE } from "./routes.js";
-import { posts } from "./index.js";
 
  const personalKey = "alex_potapov";
 const baseHost = "https://webdev-hw-api.vercel.app";
@@ -81,15 +80,11 @@ function likeForButtons(){
   for(const likeButton of likeButtons){
     likeButton.addEventListener("click", () => {
       console.log(1);
+      let id = likeButton.dataset.id;
       if(!user){
         alert("Войдите в систему")
-      }
-      let id = likeButton.dataset.id;
-      if(user){
+      } else{
         addLike(id)
-        goToPage()
-      }else{
-        deleteLike(id)
         goToPage()
       }
     })
