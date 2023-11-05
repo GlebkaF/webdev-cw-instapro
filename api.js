@@ -109,6 +109,7 @@ export function addLike(id) {
     })
     .then((responseData) => {
       console.log(responseData);
+      getPosts({token})
     });
 }
 
@@ -125,6 +126,7 @@ export function deleteLike(id) {
     })
     .then((responseData) => {
       console.log(responseData);
+      getPosts({token})
     });
 }
 
@@ -149,11 +151,48 @@ export function addPost({ token, description, imageUrl}){
     })
     .then((responseData) => {
       console.log(responseData);
-      getPosts()
+      getPosts({token})
     })
     .catch((error) => {
       if(error.message === "Не хватает данных"){
         alert("Вы передали не все данные")
       } ;
     })
+}
+
+
+
+
+// Удалить пост
+
+
+function buttonForDeletePosts(){
+  const deleteButtons = document.querySelectorAll(".delete-button")
+  for(const deleteButton of deleteButtons){
+    deleteButton.addEventListener("click", () => {
+      console.log(1);
+      if(!user){
+        alert("Войдите в систему")
+      }
+      let id = deleteButton.dataset.id;
+      deletePosts(id)
+    })
+  }
+}
+buttonForDeletePosts()
+
+export function deletePosts(id) {
+  return fetch(`${postsHost}/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: token,
+    }
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((responseData) => {
+      console.log(responseData);
+      getPosts({token})
+    });
 }
