@@ -17,11 +17,7 @@ export function renderPostsPageComponent({ appEl }) {
 
   
   const postsHtml = posts.map((element) => {
-    const now  = new Date();
-    const dateFormated = formatDistanceToNow(new Date(element.createdAt), now ,{
-      addSuffix: true,
-      locale: 'ru',
-    });
+    const dateFormated = formatDistanceToNow(new Date(element.createdAt));
     
     return `<li class="post">
     <div class="post-header" data-user-id="${element.user.id}">
