@@ -16,6 +16,8 @@ export function renderPostsPageComponent({ appEl }) {
 
   
   const postsHtml = posts.map((element) => {
+    const dateFormated = element.createdAt;
+    
     return `<li class="post">
     <div class="post-header" data-user-id="${element.user.id}">
         <img src="${element.user.imageUrl}" class="post-header__user-image">
@@ -42,7 +44,7 @@ export function renderPostsPageComponent({ appEl }) {
       ${element.description}
     </p>
     <p class="post-date">
-      ${element.createdAt}
+      ${dateFormated} 
     </p>
   </li>`
   }).join("")
