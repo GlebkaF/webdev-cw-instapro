@@ -35,13 +35,13 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
 
 
 
-    // Тут по дефолту шла логика с кнопкой доьавить пост(фото)
-    let descriptionInput = document.querySelector(".input textarea");
+    
+    let descriptionInput = document.querySelector(".textarea");
 
     document.getElementById("add-button").addEventListener("click", () => {
       addPost({
         description: descriptionInput.value,
-        imageUrl: uploadImage(),
+        imageUrl: uploadImage({file}),
       })
       .then(() => {
         getPosts({token})

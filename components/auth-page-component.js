@@ -131,7 +131,6 @@ export function renderAuthPageComponent({ appEl, setUser }) {
           login: sanitaze(login.value),
           password: sanitaze(password.value),
           name: sanitaze(name.value),
-          imageUrl,
         })
           .then((user) => {
             setUser(user.user);

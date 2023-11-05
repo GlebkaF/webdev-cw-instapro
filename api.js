@@ -25,14 +25,13 @@ export function getPosts({ token }) {
 }
 
 // Регистрация
-export function registerUser({ login, password, name, imageUrl }) {
+export function registerUser({ login, password, name }) {
   return fetch("https://wedev-api.sky.pro/api/user", {
     method: "POST",
     body: JSON.stringify({
       login,
       password,
       name,
-      imageUrl,
     }),
   }).then((response) => {
     if (response.status === 400) {
@@ -63,7 +62,7 @@ export function uploadImage({ file }) {
   const data = new FormData();
   data.append("file", file);
 
-  return fetch(`${postsHost}/api/upload/image`, {
+  return fetch("https://webdev-hw-api.vercel.app/api/upload/image", {    
     method: "POST",
     body: data,
   })
