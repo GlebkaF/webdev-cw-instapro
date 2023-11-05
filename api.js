@@ -1,9 +1,8 @@
-import { user } from "./index.js";
+import { goToPage, user } from "./index.js";
+import { POSTS_PAGE } from "./routes.js";
+import { posts } from "./index.js";
 
-// export const personalKey = "sergei-stepanov";
-//  const postsHost = `https://wedev-api.sky.pro/api/v1/${personalKey}/instapro`
-
- const personalKey = "sergei-stepanov";
+ const personalKey = "alex_potapov";
 const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
  
@@ -66,16 +65,14 @@ export function uploadImage({ file }) {
   const data = new FormData();
   data.append("file", file);
 
-  return fetch(postsHost + "/api/upload/image", {    
+  return fetch(baseHost + "/api/upload/image", {    
     method: "POST",
     body: data,
   })
   .then((response) => {
     return response.json();
-  })
-  .then((data) => {
-    console.log(data.fileUrl);
   });
+  
 }
 
 
@@ -83,14 +80,17 @@ function likeForButtons(){
   const likeButtons = document.querySelectorAll(".like-button")
   for(const likeButton of likeButtons){
     likeButton.addEventListener("click", () => {
+      console.log(1);
       if(!user){
         alert("Войдите в систему")
       }
       let id = likeButton.dataset.id;
       if(user){
         addLike(id)
+        goToPage()
       }else{
         deleteLike(id)
+        goToPage()
       }
     })
   }
@@ -111,7 +111,7 @@ export function addLike(id) {
     })
     .then((responseData) => {
       console.log(responseData);
-      getPosts({token})
+      goToPage(POSTS_PAGE)
     });
 }
 
