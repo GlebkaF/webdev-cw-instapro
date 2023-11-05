@@ -2,6 +2,7 @@ import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 import { getPosts } from "../api.js";
+import { formatDistanceToNow } from "date-fns";
 
 export function renderPostsPageComponent({ appEl }) {
   // TODO: реализовать рендер постов из api
@@ -16,7 +17,11 @@ export function renderPostsPageComponent({ appEl }) {
 
   
   const postsHtml = posts.map((element) => {
-    const dateFormated = element.createdAt;
+    const now  = new Date();
+    const dateFormated = formatDistanceToNow(new Date(element.createdAt), now ,{
+      addSuffix: true,
+      locale: 'ru',
+    });
     
     return `<li class="post">
     <div class="post-header" data-user-id="${element.user.id}">
