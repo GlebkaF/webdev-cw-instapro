@@ -4,7 +4,7 @@ import { POSTS_PAGE } from "./routes.js";
 
 
 
-// URl
+// URl //
 const personalKey = "alex_potapov";
 const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
