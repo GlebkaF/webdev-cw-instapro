@@ -1,6 +1,6 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage } from "../index.js";
+import { posts, goToPage } from "../main.js";
 import { getPosts } from "../api.js";
 import { formatDistanceToNow } from "date-fns";
 
@@ -9,17 +9,11 @@ export function renderPostsPageComponent({ appEl }) {
 
   console.log("Актуальный список постов:", posts);
 
-  /**
-   * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
-   * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
-   */
+  const postsHtml = posts
+    .map((element) => {
+      const dateFormated = formatDistanceToNow(new Date(element.createdAt));
 
-
-  
-  const postsHtml = posts.map((element) => {
-    const dateFormated = formatDistanceToNow(new Date(element.createdAt));
-    
-    return `<li class="post">
+      return `<li class="post">
     <div class="post-header" data-user-id="${element.user.id}">
         <img src="${element.user.imageUrl}" class="post-header__user-image">
         <p class="post-header__user-name">${element.user.name}</p>
@@ -46,9 +40,10 @@ export function renderPostsPageComponent({ appEl }) {
     <p class="post-date">
       ${dateFormated} 
     </p>
-  </li>`
-  }).join("")
-  
+  </li>`;
+    })
+    .join("");
+
   const appHtml = `
               <div class="page-container">
                 <div class="header-container"></div>

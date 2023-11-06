@@ -1,11 +1,11 @@
 import { addPost, getPosts, uploadImage } from "../api.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
-import { getToken, goToPage } from "../index.js";
+import { getToken, goToPage } from "../main.js";
 import { POSTS_PAGE } from "../routes.js";
 import { sanitaze } from "../sanitaze.js";
 
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
- let imageUrl = "";
+  let imageUrl = "";
   const render = () => {
     // TODO: Реализовать страницу добавления поста
     const appHtml = `
@@ -49,10 +49,6 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
       });
     }
 
-
-
-
-    
     let descriptionInput = document.querySelector(".textarea");
 
     document.getElementById("add-button").addEventListener("click", () => {
@@ -60,10 +56,9 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
         description: sanitaze(descriptionInput.value),
         imageUrl: imageUrl,
         token: getToken(),
-      })
-      .then(() => {
-        goToPage(POSTS_PAGE)
-      })
+      }).then(() => {
+        goToPage(POSTS_PAGE);
+      });
     });
   };
 
