@@ -1,12 +1,13 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage } from "../main.js";
-import { getPosts } from "../api.js";
+import { posts, goToPage, getToken, setPosts, renderApp } from "../main.js";
+import { addLike, deleteLike, getPosts } from "../api.js";
 import { formatDistanceToNow } from "date-fns";
 
 export function renderPostsPageComponent({ appEl }) {
   // TODO: реализовать рендер постов из api
 
+  console.log("Актуальный список постов:", posts);
 
   const postsHtml = posts
     .map((element) => {
@@ -42,8 +43,6 @@ export function renderPostsPageComponent({ appEl }) {
   </li>`;
     })
     .join("");
-    
-    console.log("Актуальный список постов:", posts);
 
   const appHtml = `
               <div class="page-container">
@@ -51,7 +50,7 @@ export function renderPostsPageComponent({ appEl }) {
                 <ul class="posts">${postsHtml}</ul>
               </div>`;
 
-  appEl.innerHTML = appHtml;
+  appEl.innerHTML = postsHtml;
 
   renderHeaderComponent({
     element: document.querySelector(".header-container"),
@@ -64,4 +63,47 @@ export function renderPostsPageComponent({ appEl }) {
       });
     });
   }
+
+  function LikeEvent(){
+    const likeButtons = document.querySelectorAll(".like-button");
+
+    likeButtons.forEach(likeButton => {
+      likeButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const postId = likeButton.dataset.postId;
+        const index = likeButton.dataset.index;
+        likeButton.classList.add("shake-bottom");
+
+        if (!posts[index].isLiked) {
+          addLike({ token: getToken(), postId })
+            .then(() => {
+              posts[index].isLiked = false;
+            })
+            .then(() => {
+              getPosts({ token: getToken() })
+                .then((response) => {
+                  setPosts(response);
+                  likeButton.classList.remove("shake-bottom");
+                  renderApp();
+                })
+            })
+        } else {
+          deleteLike({ token: getToken(), postId })
+            .then(() => {
+              posts[index].isLiked = true;
+            })
+            .then(() => {
+              getPosts({ token: getToken() })
+                .then((response) => {
+                  setPosts(response);
+                  likeButton.classList.remove("shake-bottom");
+                  renderApp();
+                })
+            })
+        }
+      });
+    });
+  };
+
+  LikeEvent();
 }
