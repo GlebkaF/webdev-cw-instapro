@@ -25,7 +25,7 @@ export function getPosts({ token }) {
       return response.json();
     })
     .then((data) => {
-      return data.posts;
+      return data.posts
     });
 }
 
@@ -75,56 +75,6 @@ export function uploadImage({ file }) {
   });
 }
 
-function likeForButtons() {
-  const likeButtons = document.querySelectorAll(".like-button");
-  for (const likeButton of likeButtons) {
-    likeButton.addEventListener("click", () => {
-      console.log(1);
-      let id = likeButton.dataset.id;
-      if (!user) {
-        alert("Войдите в систему");
-      } else {
-        addLike(id);
-        renderPostsPageComponent({ appEl });
-      }
-    });
-  }
-}
-likeForButtons();
-
-// Функция лайков
-export function addLike(id) {
-  return fetch(`${postsHost}/${id}/like`, {
-    method: "POST",
-    headers: {
-      Authorization: token,
-    },
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((responseData) => {
-      console.log(responseData);
-      goToPage(POSTS_PAGE);
-    });
-}
-
-//Убрать лайк
-export function deleteLike(id) {
-  return fetch(`${postsHost}/${id}/dislike`, {
-    method: "POST",
-    headers: {
-      Authorization: token,
-    },
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .then((responseData) => {
-      console.log(responseData);
-      getPosts({ token });
-    });
-}
 
 // Добавить новый пост
 export function addPost({ token, description, imageUrl }) {
@@ -155,35 +105,37 @@ export function addPost({ token, description, imageUrl }) {
     });
 }
 
-// Удалить пост
+// Функционал лайков
 
-function buttonForDeletePosts() {
-  const deleteButtons = document.querySelectorAll(".delete-button");
-  for (const deleteButton of deleteButtons) {
-    deleteButton.addEventListener("click", () => {
-      console.log(1);
-      if (!user) {
-        alert("Войдите в систему");
-      }
-      let id = deleteButton.dataset.id;
-      deletePosts(id);
-    });
-  }
-}
-buttonForDeletePosts();
-
-export function deletePosts(id) {
-  return fetch(`${postsHost}/${id}`, {
-    method: "DELETE",
+export const addLike = ({ token, postId }) => {
+  return fetch(postsHost + '/' + postId + "/like", {
+    method: "POST",
     headers: {
       Authorization: token,
     },
   })
     .then((response) => {
+      if (response.status === 401) {
+        alert('Лайкать посты могут только авторизованные пользователи');
+        throw new Error("Нет авторизации");
+      }
+
       return response.json();
     })
-    .then((responseData) => {
-      console.log(responseData);
-      goToPage();
-    });
+}
+
+export const deleteLike = ({ token, postId }) => {
+  return fetch(postsHost + '/' + postId + "/dislike", {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
+
+      return response.json();
+    })
 }

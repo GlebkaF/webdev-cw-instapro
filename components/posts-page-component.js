@@ -7,7 +7,6 @@ import { formatDistanceToNow } from "date-fns";
 export function renderPostsPageComponent({ appEl }) {
   // TODO: реализовать рендер постов из api
 
-  console.log("Актуальный список постов:", posts);
 
   const postsHtml = posts
     .map((element) => {
@@ -43,6 +42,8 @@ export function renderPostsPageComponent({ appEl }) {
   </li>`;
     })
     .join("");
+    
+    console.log("Актуальный список постов:", posts);
 
   const appHtml = `
               <div class="page-container">
