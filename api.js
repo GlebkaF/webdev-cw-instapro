@@ -1,9 +1,15 @@
-// Замени на свой, чтобы получить независимый от других набор данных.
-// "боевая" версия инстапро лежит в ключе prod
-const personalKey = "prod";
+import { renderPostsPageComponent } from "./components/posts-page-component.js";
+import { goToPage, user } from "./main.js";
+import { POSTS_PAGE } from "./routes.js";
+
+
+
+// URl //
+const personalKey = "alex_potapov";
 const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
+// Получает из API список постов
 export function getPosts({ token }) {
   return fetch(postsHost, {
     method: "GET",
@@ -19,19 +25,18 @@ export function getPosts({ token }) {
       return response.json();
     })
     .then((data) => {
-      return data.posts;
+      return data.posts
     });
 }
 
-// https://github.com/GlebkaF/webdev-hw-api/blob/main/pages/api/user/README.md#%D0%B0%D0%B2%D1%82%D0%BE%D1%80%D0%B8%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%D1%81%D1%8F
-export function registerUser({ login, password, name, imageUrl }) {
-  return fetch(baseHost + "/api/user", {
+// Регистрация
+export function registerUser({ login, password, name }) {
+  return fetch("https://wedev-api.sky.pro/api/user", {
     method: "POST",
     body: JSON.stringify({
       login,
       password,
       name,
-      imageUrl,
     }),
   }).then((response) => {
     if (response.status === 400) {
@@ -41,8 +46,9 @@ export function registerUser({ login, password, name, imageUrl }) {
   });
 }
 
+// Авторизация
 export function loginUser({ login, password }) {
-  return fetch(baseHost + "/api/user/login", {
+  return fetch("https://wedev-api.sky.pro/api/user/login", {
     method: "POST",
     body: JSON.stringify({
       login,
@@ -67,4 +73,135 @@ export function uploadImage({ file }) {
   }).then((response) => {
     return response.json();
   });
+}
+
+function likeForButtons() {
+  const likeButtons = document.querySelectorAll(".like-button");
+  for (const likeButton of likeButtons) {
+    likeButton.addEventListener("click", () => {
+      console.log(1);
+      let id = likeButton.dataset.id;
+      if (!user) {
+        alert("Войдите в систему");
+      } else {
+        addLike(id);
+        renderPostsPageComponent({ appEl });
+      }
+    });
+  }
+}
+likeForButtons();
+
+// Функция лайков
+export function addLike(id) {
+  return fetch(`${postsHost}/${id}/like`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((responseData) => {
+      console.log(responseData);
+      goToPage(POSTS_PAGE);
+    });
+}
+
+//Убрать лайк
+export function deleteLike(id) {
+  return fetch(`${postsHost}/${id}/dislike`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((responseData) => {
+      console.log(responseData);
+      getPosts({ token });
+    });
+}
+
+// Добавить новый пост
+export function addPost({ token, description, imageUrl }) {
+  return fetch(postsHost, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      imageUrl,
+      description,
+    }),
+  })
+    .then((response) => {
+      if (response.status === 400) {
+        throw new Error("Не хватает данных");
+      }
+      return response.json();
+    })
+    .then((responseData) => {
+      console.log(responseData);
+      getPosts({ token });
+    })
+    .catch((error) => {
+      if (error.message === "Не хватает данных") {
+        alert("Вы передали не все данные");
+      }
+    });
+}
+
+// Удалить пост
+
+function buttonForDeletePosts() {
+  const deleteButtons = document.querySelectorAll(".delete-button");
+  for (const deleteButton of deleteButtons) {
+    deleteButton.addEventListener("click", () => {
+      console.log(1);
+      if (!user) {
+        alert("Войдите в систему");
+      }
+      let id = deleteButton.dataset.id;
+      deletePosts(id);
+    });
+  }
+}
+buttonForDeletePosts();
+
+export function deletePosts(id) {
+  return fetch(`${postsHost}/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
+
+      return response.json();
+    })
+}
+export function userPosts({ token, userId }) {
+  return fetch(postsHost + `/user-posts/${userId}`, {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
+
+      return response.json();
+    })
+    .then((response) => {
+      return response.posts;
+    });
 }

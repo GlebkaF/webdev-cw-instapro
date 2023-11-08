@@ -1,6 +1,7 @@
 import { loginUser, registerUser } from "../api.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
+import { sanitaze } from "../sanitaze.js";
 
 export function renderAuthPageComponent({ appEl, setUser }) {
   let isLoginMode = true;
@@ -79,8 +80,8 @@ export function renderAuthPageComponent({ appEl, setUser }) {
       setError("");
 
       if (isLoginMode) {
-        const login = document.getElementById("login-input").value;
-        const password = document.getElementById("password-input").value;
+        const login = document.getElementById("login-input");
+        const password = document.getElementById("password-input");
 
         if (!login) {
           alert("Введите логин");
@@ -93,8 +94,8 @@ export function renderAuthPageComponent({ appEl, setUser }) {
         }
 
         loginUser({
-          login: login,
-          password: password,
+          login: sanitaze(login.value),
+          password: sanitaze(password.value),
         })
           .then((user) => {
             setUser(user.user);
@@ -104,9 +105,9 @@ export function renderAuthPageComponent({ appEl, setUser }) {
             setError(error.message);
           });
       } else {
-        const login = document.getElementById("login-input").value;
-        const name = document.getElementById("name-input").value;
-        const password = document.getElementById("password-input").value;
+        const login = document.getElementById("login-input");
+        const name = document.getElementById("name-input");
+        const password = document.getElementById("password-input");
         if (!name) {
           alert("Введите имя");
           return;
@@ -127,10 +128,9 @@ export function renderAuthPageComponent({ appEl, setUser }) {
         }
 
         registerUser({
-          login: login,
-          password: password,
-          name: name,
-          imageUrl,
+          login: sanitaze(login.value),
+          password: sanitaze(password.value),
+          name: sanitaze(name.value),
         })
           .then((user) => {
             setUser(user.user);
