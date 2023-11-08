@@ -25,7 +25,7 @@ export function getPosts({ token }) {
       return response.json();
     })
     .then((data) => {
-      return data.posts;
+      return data.posts
     });
 }
 
@@ -75,55 +75,40 @@ export function uploadImage({ file }) {
   });
 }
 
-function likeForButtons() {
-  const likeButtons = document.querySelectorAll(".like-button");
-  for (const likeButton of likeButtons) {
-    likeButton.addEventListener("click", () => {
-      console.log(1);
-      let id = likeButton.dataset.id;
-      if (!user) {
-        alert("Войдите в систему");
-      } else {
-        addLike(id);
-        renderPostsPageComponent({ appEl });
+
+
+
+export function addLike({ token, postId }){
+  return fetch(postsHost + '/' + postId + "/like", {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        alert('Лайкать посты могут только авторизованные пользователи');
+        throw new Error("Нет авторизации");
       }
-    });
-  }
-}
-likeForButtons();
 
-// Функция лайков
-export function addLike(id) {
-  return fetch(`${postsHost}/${id}/like`, {
+      return response.json();
+    })
+}
+
+export function deleteLike({ token, postId }){
+  return fetch(postsHost + '/' + postId + "/dislike", {
     method: "POST",
     headers: {
       Authorization: token,
     },
   })
     .then((response) => {
-      return response.json();
-    })
-    .then((responseData) => {
-      console.log(responseData);
-      goToPage(POSTS_PAGE);
-    });
-}
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
 
-//Убрать лайк
-export function deleteLike(id) {
-  return fetch(`${postsHost}/${id}/dislike`, {
-    method: "POST",
-    headers: {
-      Authorization: token,
-    },
-  })
-    .then((response) => {
       return response.json();
     })
-    .then((responseData) => {
-      console.log(responseData);
-      getPosts({ token });
-    });
 }
 
 // Добавить новый пост
@@ -162,7 +147,7 @@ function buttonForDeletePosts() {
   for (const deleteButton of deleteButtons) {
     deleteButton.addEventListener("click", () => {
       console.log(1);
-      if (!user) {
+      if (response.status === 401) {
         alert("Войдите в систему");
       }
       let id = deleteButton.dataset.id;
@@ -185,5 +170,23 @@ export function deletePosts(id) {
     .then((responseData) => {
       console.log(responseData);
       goToPage();
+    });
+}
+export function userPosts({ token, userId }) {
+  return fetch(postsHost + `/user-posts/${userId}`, {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
+
+      return response.json();
+    })
+    .then((response) => {
+      return response.posts;
     });
 }

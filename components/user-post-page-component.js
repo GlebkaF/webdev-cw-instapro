@@ -4,7 +4,7 @@ import { posts, goToPage, getToken, setPosts, renderApp } from "../main.js";
 import { addLike, deleteLike, getPosts } from "../api.js";
 import { formatDistanceToNow } from "date-fns";
 
-export function renderPostsPageComponent({ appEl }) {
+export function renderUserPage({ appEl }) {
 
   const appPosts = posts.map((post) => {
     return {
@@ -52,9 +52,10 @@ export function renderPostsPageComponent({ appEl }) {
           </li >                  
         </ul >
       </div > `
-  });
+  }).join("")
 
   appEl.innerHTML = postsHtml;
+
 
   renderHeaderComponent({
     element: document.querySelector(".header-container"),
