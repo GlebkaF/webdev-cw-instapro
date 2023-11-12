@@ -55,8 +55,8 @@
 }
 
 .post-header__user-image {
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   object-fit: cover;
   border-radius: 40px;
   margin-right: 10px;
@@ -68,7 +68,9 @@
   height: 500px;
   display: flex;
   justify-content: center;
-  background-color: #e0e0e0;
+  background-color: transparent;
+  box-sizing: border-box;
+  border: 1px solid rgba(80, 80, 80, 0.568)
 }
 
 .post-image {
@@ -76,6 +78,11 @@
   height: 100%;
   max-width: 500px;
   object-fit: cover;
+  transition: all 0.2s;
+}
+
+.post-image:active{
+transform: scale(1.8);
 }
 
 .post-likes {
@@ -95,6 +102,7 @@
 
 .user-name {
   font-weight: 500;
+  font-size: 16px;
 }
 
 .post-text {
