@@ -45,8 +45,8 @@ export const addPost = ({ token, description, imageUrl }) => {
     return fetch(postsHost, {
         method: "POST",
         body: JSON.stringify({
-            description: description.replaceAll(/</g, "&gt;")
-                .replaceAll(">", "&#60;")
+            description: description.replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
                 .replaceAll('&', '&amp;')
                 .replaceAll('"', '&quot;'),
             imageUrl,
