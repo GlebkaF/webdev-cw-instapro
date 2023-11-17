@@ -150,3 +150,5 @@ export const renderApp = () => {
 };
 
 goToPage(POSTS_PAGE);
+
+console.log("main.js")

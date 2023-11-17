@@ -131,3 +131,5 @@ const renderApp = () => {
 };
 
 goToPage(POSTS_PAGE);
+
+console.log("index.js")
