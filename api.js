@@ -45,8 +45,8 @@ export const addPost = ({ token, description, imageUrl }) => {
     return fetch(postsHost, {
         method: "POST",
         body: JSON.stringify({
-            description: description.replaceAll("<", "&lt;")
-                .replaceAll(">", "&gt;")
+            description: description.replaceAll(/</g, "&lt;")
+                .replaceAll(/>/g, "&gt;")
                 .replaceAll('&', '&amp;')
                 .replaceAll('"', '&quot;'),
             imageUrl,
@@ -102,16 +102,16 @@ export function registerUser({ login, password, name, imageUrl }) {
     return fetch(baseHost + "/api/user", {
         method: "POST",
         body: JSON.stringify({
-            login: login.replaceAll("<", "&lt")
-                .replaceAll(">", "&gt")
+            login: login.replaceAll(/</g, "&lt")
+                .replaceAll(/>/g, "&gt")
                 .replaceAll("&", "&amp;")
                 .replaceAll('"', "&quot;"),
             password: password.replaceAll("<", "&lt")
-                .replaceAll(">", "&gt")
+                .replaceAll(/>/g, "&gt")
                 .replaceAll("&", "&amp;")
                 .replaceAll('"', "&quot;"),
             name: name.replaceAll("<", "&lt")
-                .replaceAll(">", "&gt")
+                .replaceAll(/>/g, "&gt")
                 .replaceAll("&", "&amp;")
                 .replaceAll('"', "&quot;"),
             imageUrl,
