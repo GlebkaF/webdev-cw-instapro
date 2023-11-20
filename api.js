@@ -3,7 +3,7 @@ const defaultKey = "prod"
 const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${defaultKey}/instapro`;
 
-import {getEncodedValue} from "./helpers.js"
+import { getEncodedValue } from "./helpers.js"
 
 export function getPosts({ token }) {
     return fetch(postsHost, {
@@ -102,9 +102,9 @@ export function registerUser({ login, password, name, imageUrl }) {
     return fetch(baseHost + "/api/user", {
         method: "POST",
         body: JSON.stringify({
-            login,
-            password,
-            name,
+            login: getEncodedValue(login),
+            password: getEncodedValue(password),
+            name: getEncodedValue(name),
             imageUrl,
         }),
     }).then((response) => {
@@ -119,8 +119,8 @@ export function loginUser({ login, password }) {
     return fetch(baseHost + "/api/user/login", {
         method: "POST",
         body: JSON.stringify({
-            login,
-            password,
+            login: getEncodedValue(login),
+            password: getEncodedValue(password),
         }),
     }).then((response) => {
         if (response.status === 400) {
