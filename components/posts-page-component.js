@@ -53,7 +53,7 @@ ${element.date} назад
 </li >
 </ul >
 </div > `
-  });
+  }).join(" ");
 
   appEl.innerHTML = postsHtml;
 
