@@ -3,6 +3,8 @@ const defaultKey = "prod"
 const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${defaultKey}/instapro`;
 
+import {getEncodedValue} from "./helpers.js"
+
 export function getPosts({ token }) {
     return fetch(postsHost, {
         method: "GET",
@@ -41,14 +43,12 @@ export function getUserPosts({ token, userId }) {
         });
 }
 
+
 export const addPost = ({ token, description, imageUrl }) => {
     return fetch(postsHost, {
         method: "POST",
         body: JSON.stringify({
-            description: description.replaceAll(/</g, "&lt;")
-                .replaceAll(/>/g, "&gt;")
-                .replaceAll('&', '&amp;')
-                .replaceAll('"', '&quot;'),
+            description: getEncodedValue(description),
             imageUrl,
         }),
         headers: {
@@ -102,18 +102,9 @@ export function registerUser({ login, password, name, imageUrl }) {
     return fetch(baseHost + "/api/user", {
         method: "POST",
         body: JSON.stringify({
-            login: login.replaceAll("<", "&lt")
-                .replaceAll(">", "&gt")
-                .replaceAll("&", "&amp;")
-                .replaceAll('"', "&quot;"),
-            password: password.replaceAll("<", "&lt")
-                .replaceAll(">", "&gt")
-                .replaceAll("&", "&amp;")
-                .replaceAll('"', "&quot;"),
-            name: name.replaceAll("<", "&lt")
-                .replaceAll(">", "&gt")
-                .replaceAll("&", "&amp;")
-                .replaceAll('"', "&quot;"),
+            login,
+            password,
+            name,
             imageUrl,
         }),
     }).then((response) => {
@@ -128,14 +119,8 @@ export function loginUser({ login, password }) {
     return fetch(baseHost + "/api/user/login", {
         method: "POST",
         body: JSON.stringify({
-            login: login.replaceAll("<", "&lt")
-                .replaceAll(">", "&gt")
-                .replaceAll("&", "&amp;")
-                .replaceAll('"', "&quot;"),
-            password: password.replaceAll("<", "&lt")
-                .replaceAll(">", "&gt")
-                .replaceAll("&", "&amp;")
-                .replaceAll('"', "&quot;"),
+            login,
+            password,
         }),
     }).then((response) => {
         if (response.status === 400) {
