@@ -54,13 +54,13 @@ ${element.date} назад
 </li >
 </ul >
 </div > `
-}).join(" ");
+  }).join(" ");
 
   appEl.innerHTML = postsHtml;
 
   renderHeaderComponent({
     element: document.querySelector(".header-container"),
-    
+
   });
 
   for (let userEl of document.querySelectorAll(".post-header")) {
