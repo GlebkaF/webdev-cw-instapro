@@ -4,6 +4,7 @@ import { posts, goToPage, getToken, renderApp, setPosts } from "../main.js";
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 import { setLike, removeLike, getUserPosts } from "../api.js";
+import { getEncodedValue } from "../helpers.js";
 
 export function renderUserPostsPageComponent({ appEl }) {
 
@@ -44,8 +45,8 @@ export function renderUserPostsPageComponent({ appEl }) {
                 </p>
               </div>
               <p class="post-text">
-                <span class="user-name">${element.userName}</span>
-                ${element.description}
+                <span class="user-name">${getEncodedValue(element.userName)}</span>
+                ${getEncodedValue(element.description)}
               </p>
               <p class="post-date">
               ${element.date} назад

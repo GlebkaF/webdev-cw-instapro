@@ -26,7 +26,6 @@ ${!isLoginMode
 `
         : ""
       }
-
 <input type="text" id="login-input" class="input" placeholder="Логин" />
 <input type="password" id="password-input" class="input" placeholder="Пароль" />
 
