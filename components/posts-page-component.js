@@ -25,35 +25,35 @@ export function renderPostsPageComponent({ appEl }) {
 
   const postsHtml = appPosts.map((element, index) => {
     return `
-<div class="page-container">
-<div class="header-container"></div>
-<ul class="posts">
-<li class="post" data-index=${index}>
-<div class="post-header" data-user-id="${element.userId}">
-<img src="${element.userImageUrl}" class="post-header__user-image">
-<p class="post-header__user-name">${element.userName}</p>
-</div>
-<div class="post-image-container">
-<img class="post-image" src="${element.imageUrl}">
-</div>
-<div class="post-likes">
-<button data-post-id="${element.id}" data-like="${element.isLiked ? 'true' : ''}" data-index="${index}" class="like-button">
-<img src="${element.isLiked ? `./assets/images/like-active.svg` : `./assets/images/like-not-active.svg`}">
-</button>
-<p class="post-likes-text">
-Нравится: <strong>${getEncodedValue(element.likes.length >= 1 ? element.likes[0].name : '0')}</strong> ${getEncodedValue((element.likes.length - 1) > 0 ? 'и ещё' + ' ' + (element.likes.length - 1) : '')}
-</p >
-</div >
-<p class="post-text">
-<span class="user-name "> ${getEncodedValue(element.userName)}</span>
-${getEncodedValue(element.description)}
-</p>
-<p class="post-date">
-${element.date} назад
-</p>
-</li >
-</ul >
-</div > `
+    <div class="page-container">
+      <div class="header-container"></div>
+      <ul class="posts">
+        <li class="post" data-index=${index}>
+          <div class="post-header" data-user-id="${element.userId}">
+            <img src="${element.userImageUrl}" class="post-header__user-image">
+              <p class="post-header__user-name">${element.userName}</p>
+          </div>
+          <div class="post-image-container">
+            <img class="post-image" src="${element.imageUrl}">
+          </div>
+          <div class="post-likes">
+            <button data-post-id="${element.id}" data-like="${element.isLiked ? 'true' : ''}" data-index="${index}" class="like-button">
+              <img src="${element.isLiked ? `./assets/images/like-active.svg` : `./assets/images/like-not-active.svg`}">
+            </button>
+            <p class="post-likes-text">
+              Нравится: <strong>${getEncodedValue(element.likes.length >= 1 ? element.likes[0].name : '0')}</strong> ${getEncodedValue((element.likes.length - 1) > 0 ? 'и ещё' + ' ' + (element.likes.length - 1) : '')}
+            </p >
+          </div >
+          <p class="post-text">
+            <span class="user-name "> ${getEncodedValue(element.userName)}</span>
+            ${getEncodedValue(element.description)}
+          </p>
+          <p class="post-date">
+            ${element.date} назад
+          </p>
+        </li >
+      </ul >
+    </div > `
   }).join(" ");
 
   appEl.innerHTML = postsHtml;

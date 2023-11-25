@@ -54,7 +54,7 @@ export function renderUserPostsPageComponent({ appEl }) {
             </li>                  
           </ul>
         </div>`
-    });
+    }).join(" ");
 
     appEl.innerHTML = postsHtml;
 
