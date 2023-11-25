@@ -4,6 +4,7 @@ import { posts, goToPage, getToken, renderApp, setPosts } from "../main.js";
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 import { setLike, removeLike, getPosts } from "../api.js";
+import { getEncodedValue } from "../helpers.js";
 
 export function renderPostsPageComponent({ appEl }) {
 
@@ -44,8 +45,8 @@ export function renderPostsPageComponent({ appEl }) {
 </p >
 </div >
 <p class="post-text">
-<span class="user-name">${element.userName}</span>
-${element.description}
+<span class="user-name "> ${getEncodedValue(element.userName)}</span>
+${getEncodedValue(element.description)}
 </p>
 <p class="post-date">
 ${element.date} назад
@@ -53,12 +54,13 @@ ${element.date} назад
 </li >
 </ul >
 </div > `
-  }).join(" ");
+}).join(" ");
 
   appEl.innerHTML = postsHtml;
 
   renderHeaderComponent({
     element: document.querySelector(".header-container"),
+    
   });
 
   for (let userEl of document.querySelectorAll(".post-header")) {
@@ -68,6 +70,8 @@ ${element.date} назад
       });
     });
   }
+
+
 
   const likeEventListener = () => {
     const likeButtons = document.querySelectorAll(".like-button");

@@ -48,7 +48,7 @@ export const addPost = ({ token, description, imageUrl }) => {
     return fetch(postsHost, {
         method: "POST",
         body: JSON.stringify({
-            description: getEncodedValue(description),
+            description: description,
             imageUrl,
         }),
         headers: {
