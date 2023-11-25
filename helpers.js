@@ -16,7 +16,7 @@ export function removeUserFromLocalStorage(user) {
 
 export const getEncodedValue = (value) => {
   return value.replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
+      .replaceAll(/</g, '&lt;')
+      .replaceAll(/>/g, '&gt;')
+      .replaceAll(/"/g, '&quot;')
 }
