@@ -8,14 +8,14 @@ import {
   renderApp,
   user,
   setPosts,
+  userId,
 } from "../index.js";
-import { addLike, getPosts, postDelete, removeLike } from "../api.js";
+import { addLike, getPosts, postDelete, removeLike, userPostsPage } from "../api.js";
 import { addLikePost, replaceFunction } from "../helpers.js";
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
-
 ////////////////////////////////////////////////
-export function renderPostsPageComponent({ appEl }) {
+export function renderPostsUserComponent({ appEl }) {
   // TODO: реализовать рендер постов из api
   // console.log("Актуальный список постов:", posts);
 
@@ -60,12 +60,9 @@ export function renderPostsPageComponent({ appEl }) {
           }
           </p>
           <div class="delete-button-container">
-          ${
-            user
-              ? `<button class="delete-button"
-            id="button-delete">Удалить</button>`
-              : ""
-          }
+          <button class="delete-button ${
+            !user ? "hidden" : ""
+          }" id="button-delete" data-post-id="${post.postId}">Удалить</button>
         </div>
 
         </div>
@@ -100,7 +97,6 @@ export function renderPostsPageComponent({ appEl }) {
       });
     });
   }
-
   likeEventListener({ token: getToken() });
   likeImageEventListener({ token: getToken() });
   postDeleteEventListener({ token: getToken() });
@@ -114,7 +110,7 @@ export function likeEventListener() {
       event.stopPropagation();
       const postId = likeButton.dataset.postId;
 
-      addLikePost(postId, index, getPosts);
+      addLikePost(postId, index, userPostsPage, userId);
     });
   });
 }
@@ -127,25 +123,28 @@ export function likeImageEventListener() {
     postImage.addEventListener("dblclick", (event) => {
       event.stopPropagation();
       const postId = likeButtons[index].dataset.postId;
-      addLikePost(postId, index, getPosts);
+
+      addLikePost(postId, index, userPostsPage, userId);
     });
   });
 }
 
 export function postDeleteEventListener() {
-  if (!user) return;
   const deleteButtons = document.querySelectorAll(".delete-button");
   const likeButtons = document.querySelectorAll(".like-button");
 
   deleteButtons.forEach((deleteButton, index) => {
     deleteButton.addEventListener("click", (event) => {
       event.stopPropagation();
+
       const postId = likeButtons[index].dataset.postId;
+
       postDelete({ token: getToken(), postId }).then(() => {
         getPosts({ token: getToken() }).then((response) => {
           setPosts(response);
           renderApp();
         });
+        // renderApp();
       });
     });
   });
