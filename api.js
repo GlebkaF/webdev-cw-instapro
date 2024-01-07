@@ -1,7 +1,7 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
 const personalKey = "prod";
-const baseHost = "https://webdev-hw-api.vercel.app";
+const baseHost = "https://wedev-api.sky.pro";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
 export function getPosts({ token }) {
@@ -32,17 +32,18 @@ export function postNewPost({ token, description, imageUrl }) {
     body: JSON.stringify({
       description,
       imageUrl,
-    })
-  }).then((response) => {
-    if (response.status === 400) {
-      throw new Error("Не введено описание или не добавлена картинка")
-    }
-    return response.json()
-  }).catch((error) => {
-    if (error.message === "Не введено описание или не добавлена картинка") {
-      alert("Введите описание или добавьте картинку")
-    }
+    }),
   })
+    .then((response) => {
+      if (response.status === 400) {
+        throw new Error("Не введено описание или не добавлена картинка")
+      }
+      return response.json()
+    }).catch((error) => {
+      if (error.message === "Не введено описание или не добавлена картинка") {
+        alert("Введите описание или добавьте картинку")
+      }
+    })
 
 }
 
@@ -51,16 +52,57 @@ export function postGetUser({ token, userId }) {
     method: "GET",
     headers: {
       Authorization: token,
-    }
+    },
   })
     .then((response) => {
       console.log(userId);
-      return response.json()
+      return response.json();
     })
     .then((responseData) => {
-      return responseData.posts
+      return responseData.posts;
     })
 
+}
+// Функция POST запроса для лайков
+export function postLikes({ token, id }) {
+  fetch(postsHost + `/${id}/like`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error("Авторизируйтесь, чтобы поставить лайк!");
+      }
+      return response.json();
+    })
+    .catch((error) => {
+      if (error.message === "Авторизируйтесь, чтобы поставить лайк!") {
+        alert("Поставить лайк могут только авторизованные пользователи!");
+      }
+    })
+}
+
+
+export function postDisLikes({ token, id }) {
+  fetch(postsHost + `/${id}/dislike`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error("Авторизируйтесь, чтобы поставить лайк!");
+      }
+      return response.json();
+    })
+    .catch((error) => {
+      if (error.message === "Авторизируйтесь, чтобы поставить лайк!") {
+        alert("Поставить лайк могут только авторизованные пользователи!");
+      }
+    });
 }
 
 // https://github.com/GlebkaF/webdev-hw-api/blob/main/pages/api/user/README.md#%D0%B0%D0%B2%D1%82%D0%BE%D1%80%D0%B8%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%D1%81%D1%8F

@@ -1,4 +1,5 @@
-import { getPosts, postGetUser, postNewPost } from "./api.js";
+import {
+  getPosts, postGetUser, postNewPost, postLikes, postDisLikes } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -30,6 +31,22 @@ export const logout = () => {
   removeUserFromLocalStorage();
   goToPage(POSTS_PAGE);
 };
+
+export function getLikes({ postIndex }) {
+  const index = posts.findIndex((post) => post.id === postIndex);
+  const likesElement = document.querySelector(".post-likes-text");
+  if (posts[index].isLiked) {
+    postDisLikes({ token: getToken(), id: postIndex });
+    posts[index].isLiked = false;
+    posts[index].likes.length -= 1
+    renderApp();
+  } else {
+    posts[index].isLiked = true;
+    posts[index].likes.length += 1
+    postLikes({ token: getToken(), id: postIndex });
+    renderApp();
+  }
+}
 
 /**
  * Включает страницу приложения
@@ -69,7 +86,7 @@ export const goToPage = (newPage, data) => {
     if (newPage === USER_POSTS_PAGE) {
       // TODO: реализовать получение постов юзера из API
       console.log("Открываю страницу пользователя: ", data.userId);
-      page = LOADING_PAGE
+      page = LOADING_PAGE;
       renderApp();
 
       return postGetUser({
@@ -80,9 +97,7 @@ export const goToPage = (newPage, data) => {
           page = USER_POSTS_PAGE;
           posts = newPosts
           renderApp();
-
-
-        })
+        });
     }
 
     page = newPage;
@@ -122,7 +137,7 @@ const renderApp = () => {
       appEl,
       onAddPostClick({ description, imageUrl }) {
         // TODO: реализовать добавление поста в API
-        postNewPost({ token: getToken(), description, imageUrl })
+        postNewPost({ token: getToken(), description, imageUrl });
         console.log("Добавляю пост...", { description, imageUrl });
         goToPage(POSTS_PAGE);
       },
@@ -139,7 +154,7 @@ const renderApp = () => {
     // TODO: реализовать страницу фотографию пользвателя
     return renderPostsPageComponent({
       appEl,
-    })
+    });
   }
 };
 
