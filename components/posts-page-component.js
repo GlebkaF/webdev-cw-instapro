@@ -8,7 +8,7 @@ export function renderPostsPageComponent({ appEl }) {
 
   const postHTML = posts.map((item) => {
     return `                  <li class="post">
-    <div class="post-header" data-user-id="642d00329b190443860c2f31">
+    <div class="post-header" data-user-id="${item.user.id}">
         <img src="${item.user.imageUrl}" class="post-header__user-image">
         <p class="post-header__user-name">${item.user.name}</p>
     </div>
@@ -24,8 +24,8 @@ export function renderPostsPageComponent({ appEl }) {
       </p>
     </div>
     <p class="post-text">
-      <span class="user-name">${item.description}</span>
-      Ромашка, ромашка...
+      <span class="user-name">${item.user.name}</span>
+      ${item.description}
     </p>
     <p class="post-date">
       19 минут назад
