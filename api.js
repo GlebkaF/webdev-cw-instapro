@@ -1,6 +1,7 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
-const personalKey = "prod";
+import _ from "lodash";
+const personalKey = "daniil-kit";
 const baseHost = "https://wedev-api.sky.pro";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
@@ -20,6 +21,11 @@ export function getPosts({ token }) {
     })
     .then((data) => {
       return data.posts;
+    })
+    .catch((error) => {
+      if (error.message === "Нет авторизации") {
+        alert("Авторизируйтесь");
+      }
     });
 }
 
@@ -30,7 +36,11 @@ export function postNewPost({ token, description, imageUrl }) {
       Authorization: token,
     },
     body: JSON.stringify({
-      description,
+      description: description
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;"),
       imageUrl,
     }),
   })
@@ -79,7 +89,7 @@ export function postLikes({ token, id }) {
     })
     .catch((error) => {
       if (error.message === "Авторизируйтесь, чтобы поставить лайк!") {
-        alert("Поставить лайк могут только авторизованные пользователи!");
+        alert("Поставить и убрать лайк могут только авторизованные пользователи!");
       }
     })
 }
@@ -94,13 +104,13 @@ export function postDisLikes({ token, id }) {
   })
     .then((response) => {
       if (response.status !== 200) {
-        throw new Error("Авторизируйтесь, чтобы поставить лайк!");
+        throw new Error("Авторизируйтесь, чтобы убрать лайк!");
       }
       return response.json();
     })
     .catch((error) => {
-      if (error.message === "Авторизируйтесь, чтобы поставить лайк!") {
-        alert("Поставить лайк могут только авторизованные пользователи!");
+      if (error.message === "Авторизируйтесь, чтобы убрать лайк!") {
+        alert("Поставить и убрать лайк могут только авторизованные пользователи!");
       }
     });
 }
@@ -110,9 +120,21 @@ export function registerUser({ login, password, name, imageUrl }) {
   return fetch(baseHost + "/api/user", {
     method: "POST",
     body: JSON.stringify({
-      login,
-      password,
-      name,
+      login: _.capitalize(login)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
+      password: password
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
+      name: _.capitalize(name)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
       imageUrl,
     }),
   }).then((response) => {
@@ -127,8 +149,16 @@ export function loginUser({ login, password }) {
   return fetch(baseHost + "/api/user/login", {
     method: "POST",
     body: JSON.stringify({
-      login,
-      password,
+      login: _.capitalize(login)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
+      password: password
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;"),
     }),
   }).then((response) => {
     if (response.status === 400) {

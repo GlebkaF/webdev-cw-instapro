@@ -1,13 +1,13 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage, getLikes } from "../index.js";
-import { format } from "date-fns";
+import { formatDistanceToNow } from "date-fns";
+import { ru } from "date-fns/locale";
 
 export function renderPostsPageComponent({ appEl }) {
   // TODO: реализовать рендер постов из api
   console.log("Актуальный список постов:", posts);
 
-  const now = new Date()
   const postHTML = posts.map((item) => {
     return `                  <li class="post">
     <div class="post-header" data-user-id="${item.user.id}">
@@ -19,7 +19,7 @@ export function renderPostsPageComponent({ appEl }) {
     </div>
     <div class="post-likes">
       <button data-post-id="${item.id}" class="like-button">
-      <img src="${(item.isLiked) ? './assets/images/like-active.svg' : './assets/images/like-not-active.svg'}">
+      <img src="${(item.isLiked) ? './assets/images/like-active.svg' : './assets/images/like-not-active.svg'}"></img>
       </button>
       <p class="post-likes-text">
         Нравится: <strong>${item.likes.length}</strong>
@@ -29,8 +29,10 @@ export function renderPostsPageComponent({ appEl }) {
       <span class="user-name">${item.user.name}</span>
       ${item.description}
     </p>
-    <p class="post-date">
-      ${format(now, "dd/MM/yyyy hh.mm")}
+    <p class="post-date">Опубликовано:
+      ${formatDistanceToNow(new Date(item.createdAt), {
+        locale: ru,
+      })}
     </p>
   </li>`
   }).join("");
@@ -63,7 +65,7 @@ export function renderPostsPageComponent({ appEl }) {
 
   for (let likesEl of document.querySelectorAll(".like-button")) {
     likesEl.addEventListener("click", () => {
-      getLikes({ postIndex: likesEl.dataset.postId });
+      getLikes({ postId: likesEl.dataset.postId });
     });
   }
 }

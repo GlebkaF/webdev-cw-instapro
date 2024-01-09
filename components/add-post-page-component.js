@@ -1,4 +1,5 @@
 import { renderUploadImageComponent } from "./upload-image-component.js";
+import { renderHeaderComponent } from "./header-component.js";
 
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
   const render = () => {
@@ -21,13 +22,20 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
     document.getElementById("add-button").addEventListener("click", () => {
       const inputElement = document.getElementById('comment-input')
       onAddPostClick({
-        description: inputElement.value,
+        description: inputElement.value
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;"),
         imageUrl: imageUrl,
       });
     });
   };
 
   render();
+  renderHeaderComponent({
+    element: document.querySelector(".header-container"),
+  });
 
   const uploadImageContainer = appEl.querySelector(".upload-image-container");
   let imageUrl = "";
