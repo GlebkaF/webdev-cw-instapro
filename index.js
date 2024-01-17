@@ -112,10 +112,10 @@ const renderApp = () => {
       onAddPostClick({ description, imageUrl }) {
         // TODO: реализовать добавление поста в API
         console.log("Добавляю пост...", { description, imageUrl });
-        addPost( {description, imageUrl, token: getToken()}).then (()=>{
+        addPost({ description, imageUrl, token: getToken() }).then(() => {
           console.log("Добавляю пост...", { description, imageUrl });
           goToPage(POSTS_PAGE);
-        })
+        });
       },
     });
   }
