@@ -32,7 +32,7 @@ export const logout = () => {
 };
 
 /**
- * Включает страницу приложения
+ * Turns the application page on
  */
 export const goToPage = (newPage, data) => {
   if (
