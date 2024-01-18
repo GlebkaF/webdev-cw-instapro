@@ -70,13 +70,14 @@ export const goToPage = (newPage, data) => {
       page = LOADING_PAGE;
       renderApp();
       // TODO: реализовать получение постов юзера из API
-      return getUserPosts ({id: data.id, token: getToken()}).then((responseData)=>{
-        console.log("Открываю страницу пользователя: ", data.userId);
-        page = USER_POSTS_PAGE;
-        posts = responseData;
-        return renderApp();
-      });
-
+      return getUserPosts({ id: data.id, token: getToken() }).then(
+        (responseData) => {
+          console.log("Открываю страницу пользователя: ", data.userId);
+          page = USER_POSTS_PAGE;
+          posts = responseData;
+          return renderApp();
+        }
+      );
     }
 
     page = newPage;
