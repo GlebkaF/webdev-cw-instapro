@@ -1,9 +1,8 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
-const personalKey = "prod";
+const personalKey = "DmitriiTheBest";
 const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
-
 
 // функция getPosts делает запросы к API на получение постов
 export function getPosts({ token }) {
@@ -73,3 +72,94 @@ export function uploadImage({ file }) {
     return response.json();
   });
 }
+
+// # написать функцию для отправления новых данных
+export const postPosts = ({ token, description, imageUrl }) => {
+  return fetch(postsHost, {
+    method: "POST",
+    body: JSON.stringify({
+      description,
+      imageUrl,
+    }),
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    if (response.status === 500) {
+      throw new Error("Serer is broken");
+    } else if (response.status === 400) {
+      throw new Error("Bad request");
+    } else {
+      return response.json();
+    }
+  });
+};
+
+// # написать функцию для удаления поста
+export const deletePost = ({ token }, id) => {
+  return fetch(`${postsHost}/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    return response.json();
+  });
+};
+
+// # получаем посты конкретного пользователя (юзера)
+export const fetchPostsUser = (id, { token }) => {
+  return fetch(`${postsHost}/user-posts/${id}`, {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("No authorization");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data.posts;
+    });
+};
+
+// # adding likes
+export const addLike = ({ token }, id) => {
+  return fetch(`${postsHost}/${id}/like`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    if (response.status === 200) {
+      return response.json();
+    }
+    throw new Error("Only authorized users can add likes");
+  });
+};
+
+
+// # removing likes 
+export const removeLike = ({ token }, id) => {
+  return fetch(`${postsHost}/${id}/dislike`, {
+    method: "DELETE",
+    // method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    if (response.status === 200) {
+      return response.json();
+    }
+    throw new Error("Only authorized users can remove likes");
+  });
+};
+
+
+// API is ready
