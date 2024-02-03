@@ -25,6 +25,7 @@ const getToken = () => {
   return token;
 };
 
+// объявление функции logout
 export const logout = () => {
   user = null;
   removeUserFromLocalStorage();
@@ -32,20 +33,27 @@ export const logout = () => {
 };
 
 /**
- * Turns the application page on
+ * Turns the application page on - включает приложение
  */
+
+// объявление функции goToPage
+// принимает параметрами переменную newPage и данные (data)
+// newPage должна быть одной из переменных
+// либо POSTS_PAGE, либо AUTH_PAGE, либо ADD_POSTS_PAGE, либо USER_POSTS_PAGE, либо LOADING_PAGE
+// все эти константы (переменные) хранятся в файле routes и импортятся из файла routes.js
 export const goToPage = (newPage, data) => {
   if (
     [
-      POSTS_PAGE,
-      AUTH_PAGE,
-      ADD_POSTS_PAGE,
-      USER_POSTS_PAGE,
-      LOADING_PAGE,
+      POSTS_PAGE, // страница постов
+      AUTH_PAGE, // страница авторизации
+      ADD_POSTS_PAGE, // страница добавления поста
+      USER_POSTS_PAGE, // страница постов пользователя (юзера)
+      LOADING_PAGE, // страница загрузки 
     ].includes(newPage)
   ) {
     if (newPage === ADD_POSTS_PAGE) {
       // Если пользователь не авторизован, то отправляем его на авторизацию перед добавлением поста
+      // проверяем если юзер указан, то в переменную page записываем ADD_POSTS_PAGE, иначе AUTH_PAGE
       page = user ? ADD_POSTS_PAGE : AUTH_PAGE;
       return renderApp();
     }
@@ -83,6 +91,7 @@ export const goToPage = (newPage, data) => {
   throw new Error("страницы не существует");
 };
 
+// объявление функции renderApp
 const renderApp = () => {
   const appEl = document.getElementById("app");
   if (page === LOADING_PAGE) {
@@ -130,32 +139,37 @@ const renderApp = () => {
   }
 };
 
-goToPage(POSTS_PAGE);
+// функция gotopage - в нее передается переменная postpage,
+// которая в свою очередь импортируется из routes.js
+// сама функция gotopage объявлена чуть выше,
+// и она же является точкой входа в приложение
 
+goToPage(POSTS_PAGE); // включает страницу приложения
+// goToPage(LOADING_PAGE); // появится страница с загрузкой
+// goToPage(AUTH_PAGE); // открывается страница входа и авторизации
 
+/**
+ * Порядок действий:
+ */
 
-// Начинать с Post page component (она главная) - интегрировать 
+// Начинать с Post page component (она главная) - интегрировать
 
-// Работа со страницей постов пользователя 
+// Работа со страницей постов пользователя
 // создать компонент userPagePostComponent - рендер шапки, разметка (шаблон)
 // создать GET запрос на апи для получения постов пользователя (он будет в api.js)
 // айдишник пользователя лежит в шапке поста в дата атрибуте. (data-user-id="642d00329b190443860c2f31">)
-// запрос вызывается в индекс js. 
+// запрос вызывается в индекс js.
 //
 //
 // Сделать лайки. (функция)
-// дизлайки 
+// дизлайки
 //
 // Страница добавления поста
 // создать запрос на добавление поста (в апи джи эс)
-// Компонент загрузки изображений 
-// 
+// Компонент загрузки изображений
+//
 // Добавить textArea для того, чтоб добавлять описание картинки (в add post page component)
-// Сделать запрос 
-// Валидация при отправке 
+// Сделать запрос
+// Валидация при отправке
 
-// 
-
-
-
-
+//

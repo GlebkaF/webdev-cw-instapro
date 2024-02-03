@@ -56,4 +56,4 @@ export function renderUploadImageComponent({ element, onImageUrlChange }) {
 
   render();
 }
-// менять не надо
+// менять не надо , это для демо страницы 
