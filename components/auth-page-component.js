@@ -60,14 +60,19 @@ export function renderAuthPageComponent({ appEl, setUser }) {
       appEl.querySelector(".form-error").textContent = message;
     };
 
-    renderHeaderComponent({
+    // в renderHeaderComponent передаем элемент, 
+    // в этот элемент отрендерит какой-то кусок разметки и 
+    // навесит на этот кусок обработчики событий
+    renderHeaderComponent({ // рендер шапки с логотипом и кнопкой входа и регистрации
       element: document.querySelector(".header-container"),
     });
 
     const uploadImageContainer = appEl.querySelector(".upload-image-container");
 
     if (uploadImageContainer) {
-      renderUploadImageComponent({
+      renderUploadImageComponent({ // рендер компонента выбора изображения
+        // в качестве аргумента передаем элемент, в котором будет отрендерен компонент 
+        // и функцию, которая будет вызвана при изменении изображения
         element: appEl.querySelector(".upload-image-container"),
         onImageUrlChange(newImageUrl) {
           imageUrl = newImageUrl;
