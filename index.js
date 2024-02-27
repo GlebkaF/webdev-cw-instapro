@@ -1,6 +1,11 @@
-import { getPosts } from "./api.js";
+import { getPosts, addPost, getPostsUser } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
+import { ru } from "date-fns/locale";
+import { sanitizeHtml } from "./helpers.js";
+import { formatDistanceToNow } from "date-fns";
+import { likePost, disLikePost } from "./api.js";
+import { renderHeaderComponent } from "./components/header-component.js";
 import {
   ADD_POSTS_PAGE,
   AUTH_PAGE,
@@ -34,7 +39,7 @@ export const logout = () => {
 /**
  * Включает страницу приложения
  */
-export const goToPage = (newPage, data) => {
+export const goToPage = async (newPage, data) => {
   if (
     [
       POSTS_PAGE,
@@ -68,9 +73,10 @@ export const goToPage = (newPage, data) => {
 
     if (newPage === USER_POSTS_PAGE) {
       // TODO: реализовать получение постов юзера из API
+      let id = data.userId;
       console.log("Открываю страницу пользователя: ", data.userId);
+      posts = await getPostsUser({ id });
       page = USER_POSTS_PAGE;
-      posts = [];
       return renderApp();
     }
 
@@ -111,6 +117,7 @@ const renderApp = () => {
       appEl,
       onAddPostClick({ description, imageUrl }) {
         // TODO: реализовать добавление поста в API
+        addPost({ token: getToken(), description, imageUrl });
         console.log("Добавляю пост...", { description, imageUrl });
         goToPage(POSTS_PAGE);
       },
@@ -120,12 +127,73 @@ const renderApp = () => {
   if (page === POSTS_PAGE) {
     return renderPostsPageComponent({
       appEl,
+      token: getToken(),
     });
   }
 
   if (page === USER_POSTS_PAGE) {
     // TODO: реализовать страницу фотографию пользвателя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
+
+    const appHtml = posts.map((comment) => {
+      return `
+    <ul class="posts">
+      <li class="post">
+        <div class="post-header" data-user-id="${comment.id}">
+            <img src="${comment.user.imageUrl}" class="post-header__user-image">
+            <p class="post-header__user-name">${comment.user.name}</p>
+        </div>
+        <div class="post-image-container">
+          <img class="post-image" src="${comment.imageUrl}">
+        </div>
+        <div class="post-likes">
+          <button data-post-id="${comment.id}" class="like-button">
+            <img src="./assets/images/like-active.svg">
+          </button>
+          <p class="post-likes-text">
+            Нравится: <strong>${comment.likes.map((name) => {
+              return sanitizeHtml(name.name);
+            })}</strong>
+          </p>
+        </div>
+        <p class="post-text">
+          <span class="user-name">${comment.user.name}</span>
+         ${comment.description}
+        </p>
+        <p class="post-date">
+          ${formatDistanceToNow(comment.createdAt, new Date(), {
+            locale: ru,
+          })}
+        </p>
+      </li>
+        `;
+    });
+    appEl.innerHTML =
+      `<div class="page-container">
+      <div class="header-container"></div><div class="posts-user-header">
+    <img src="${posts[0].user.imageUrl}" class="posts-user-header__user-image">
+    <p class="posts-user-header__user-name">${posts[0].user.name}</p>
+</div>
+` + appHtml;
+    renderHeaderComponent({
+      element: document.querySelector(".header-container"),
+    });
+    for (let likeButton of document.querySelectorAll(".like-button")) {
+      likeButton.addEventListener("click", async () => {
+        let token = getToken();
+        const likeImage = likeButton.querySelector("img");
+        let commentID = likeButton.dataset.postid;
+
+        if (likeImage.src.includes("like-active")) {
+          // Dislike post
+          await disLikePost(token, commentID);
+          likeImage.src = "./assets/images/like-not-active.svg";
+        } else {
+          // Like post
+          await likePost(token, commentID);
+          likeImage.src = "./assets/images/like-active.svg";
+        }
+      });
+    }
     return;
   }
 };
