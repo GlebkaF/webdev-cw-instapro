@@ -38,7 +38,7 @@ export function renderPostsPageComponent({ appEl }) {
                     </p>
                   </li>`
     }).join('');
-
+    
   const appHtml = `
               <div class="page-container">
                 <div class="header-container"></div>
