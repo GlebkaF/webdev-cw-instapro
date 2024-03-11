@@ -14,7 +14,7 @@ export function getPosts({ token }) {
   })
     .then((response) => {
       if (response.status === 401) {
-        throw new Error("Нет авторизации");
+        throw new Error("No authorization");
       }
 
       return response.json();
@@ -37,7 +37,7 @@ export function registerUser({ login, password, name, imageUrl }) {
     }),
   }).then((response) => {
     if (response.status === 400) {
-      throw new Error("Такой пользователь уже существует");
+      throw new Error("Such user already exists");
     }
     return response.json();
   });
@@ -53,7 +53,7 @@ export function loginUser({ login, password }) {
     }),
   }).then((response) => {
     if (response.status === 400) {
-      throw new Error("Неверный логин или пароль");
+      throw new Error("Login or password is incorrect");
     }
     return response.json();
   });

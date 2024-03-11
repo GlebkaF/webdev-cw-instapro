@@ -62,7 +62,7 @@ export function renderPostsPageComponent({ appEl }) {
   ${formatDistanceToNow(new Date(post.createdAt), { locale: ru })} назад
   </p>
   </div>
-  <button data-id=${post.id}  class="button delete-button">Удалить</button>
+  <button data-id=${post.id}  class="button delete-button">Delete</button>
   </div>
   
 </li>`;
