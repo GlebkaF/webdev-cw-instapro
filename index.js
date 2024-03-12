@@ -200,7 +200,7 @@ goToPage(POSTS_PAGE); // включает страницу приложения
 
 export function deleteFetch(id) {
   if (user) {
-    deletePost({ token: getToken() }, id).then((newPosts) => {
+    deletePost(id, { token: getToken() }).then((newPosts) => {
       posts = newPosts;
       getAPI();
     });

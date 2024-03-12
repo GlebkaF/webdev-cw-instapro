@@ -96,7 +96,7 @@ export const postPosts = ({ token, description, imageUrl }) => {
 };
 
 // # написать функцию для удаления поста
-export const deletePost = ({ token }, id) => {
+export const deletePost = (id, { token }) => {
   return fetch(`${postsHost}/${id}`, {
     method: "DELETE",
     headers: {
@@ -130,7 +130,7 @@ export const fetchPostsUser = (id, { token }) => {
 };
 
 // # adding likes
-export const addLike = ({ token }, id) => {
+export const addLike = (id,{ token }) => {
   return fetch(`${postsHost}/${id}/like`, {
     method: "POST",
     headers: {
@@ -146,7 +146,7 @@ export const addLike = ({ token }, id) => {
 
 
 // # removing likes 
-export const removeLike = ({ token }, id) => {
+export const removeLike = (id, { token }) => {
   return fetch(`${postsHost}/${id}/dislike`, {
     method: "DELETE",
     // method: "POST",
