@@ -1,10 +1,21 @@
 import { loginUser, registerUser } from "../api.js";
+import { replaceSafe } from "../helpers.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
 
 export function renderAuthPageComponent({ appEl, setUser }) {
   let isLoginMode = true;
   let imageUrl = "";
+
+  const headerHtml = `
+  <div class="page-container">
+    <div class="header-container"></div>
+    <ul class="posts"></ul>
+  </div>`;
+
+  appEl.innerHTML = headerHtml;
+
+  const postsList = document.querySelector(".posts");
 
   const renderForm = () => {
     const appHtml = `
@@ -52,17 +63,13 @@ export function renderAuthPageComponent({ appEl, setUser }) {
       </div>    
 `;
 
-    appEl.innerHTML = appHtml;
+    postsList.innerHTML = appHtml;
 
     // Не вызываем перерендер, чтобы не сбрасывалась заполненная форма
     // Точечно обновляем кусочек дом дерева
     const setError = (message) => {
       appEl.querySelector(".form-error").textContent = message;
     };
-
-    renderHeaderComponent({
-      element: document.querySelector(".header-container"),
-    });
 
     const uploadImageContainer = appEl.querySelector(".upload-image-container");
 
@@ -127,9 +134,9 @@ export function renderAuthPageComponent({ appEl, setUser }) {
         }
 
         registerUser({
-          login: login,
+          login: replaceSafe(login),
           password: password,
-          name: name,
+          name: replaceSafe(name),
           imageUrl,
         })
           .then((user) => {
@@ -148,5 +155,6 @@ export function renderAuthPageComponent({ appEl, setUser }) {
     });
   };
 
+  renderHeaderComponent();
   renderForm();
 }
