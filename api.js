@@ -3,7 +3,7 @@
 import { renderApp, setPosts } from "./index.js";
 import { replaceSave } from "./helpers.js";
 
-const personalKey = "prod";
+const personalKey = "your_new_key_here";
 //prod
 const baseHost = "  https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
