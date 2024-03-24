@@ -128,31 +128,3 @@ export function likeEventListener() {
     });
   });
 }
-
-export function likeEventListenerOnIMG() {
-  const likeButtons = document.querySelectorAll(".post-image");
-
-  likeButtons.forEach((likeButton) => {
-    likeButton.addEventListener("dblclick", (event) => {
-      event.stopPropagation();
-      const postId = likeButton.dataset.postId;
-      const index = likeButton.dataset.index;
-
-      if (posts[index].isLiked) {
-        removeLikePost({ token: getToken(), postId }).then((updatedPost) => {
-          posts[index].isLiked = false;
-          posts[index].likes = updatedPost.post.likes;
-          renderApp();
-        });
-      } else {
-        addLikePost({ token: getToken(), postId }).then((updatedPost) => {
-          posts[index].isLiked = true;
-          posts[index].likes = updatedPost.post.likes;
-
-          renderApp();
-        });
-      }
-    });
-  });
-}
-
