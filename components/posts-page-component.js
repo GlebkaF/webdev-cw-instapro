@@ -77,13 +77,13 @@ export function renderPostsPageComponent({ appEl }) {
     message = "постов нет";
   }
 
-  const originHtml = `	
-	<div class="page-container">
-	<div class="header-container"></div>
-	<ul class="posts">
-	${message}
-	</ul>
-</div>`;
+//   const originHtml = `	
+// 	<div class="page-container">
+// 	<div class="header-container"></div>
+// 	<ul class="posts">
+// 	${message}
+// 	</ul>
+// </div>`;
 
   appEl.innerHTML = originHtml;
 
