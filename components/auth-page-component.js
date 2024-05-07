@@ -1,4 +1,5 @@
 import { loginUser, registerUser } from "../api.js";
+import { sanitizeHtml } from "../helpers.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
 
@@ -100,7 +101,7 @@ export function renderAuthPageComponent({ appEl, setUser }) {
             setUser(user.user);
           })
           .catch((error) => {
-            console.warn(error);
+            //console.warn(error);
             setError(error.message);
           });
       } else {
@@ -127,16 +128,16 @@ export function renderAuthPageComponent({ appEl, setUser }) {
         }
 
         registerUser({
-          login: login,
+          login: sanitizeHtml(login),
           password: password,
-          name: name,
+          name: sanitizeHtml(name),
           imageUrl,
         })
           .then((user) => {
             setUser(user.user);
           })
           .catch((error) => {
-            console.warn(error);
+            //console.warn(error);
             setError(error.message);
           });
       }
