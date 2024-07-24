@@ -39,3 +39,23 @@ export function renderHeaderComponent({ element }) {
 
   return element;
 }
+
+// export const renderHeaderComponent = ({ appEl, user, goToPage }) => {
+//   const headerContainer = document.createElement('div');
+//   headerContainer.className = 'header-container';
+
+//   headerContainer.innerHTML = `
+//     <header>
+//       <h1>Welcome ${user ? user.name : 'Guest'}</h1>
+//       ${user ? '<button id="logout-btn">Logout</button>' : ''}
+//     </header>
+//   `;
+
+//   appEl.prepend(headerContainer);
+
+//   if (user) {
+//     document.getElementById('logout-btn').addEventListener('click', () => {
+//       goToPage('logout');
+//     });
+//   }
+// };
